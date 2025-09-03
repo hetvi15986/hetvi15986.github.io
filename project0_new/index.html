@@ -16,43 +16,58 @@
             color: #34495e;
             margin-top: 40px;
         }
-        img {
-            max-width: 100%;
-            margin: 10px 0;
+        a {
+            color: #2980b9;
+        }
+
+        /* Image styling */
+        .small-img {
+            width: 200px;
             border: 2px solid #ccc;
             border-radius: 8px;
         }
+
+        .images-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
         .gif {
             display: block;
             margin: 20px auto;
-        }
-        a {
-            color: #2980b9;
+            max-width: 400px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
     <h1>Project 0</h1>
-    <p>Welcome to my Project 0!</p>
+    <p>Welcome to my Project 0 showcase!</p>
 
     <!-- Part 1 -->
     <h2>Part 1</h2>
     <p>Here are some images for Part 1:</p>
-    <img src="images/part1_image1.jpeg" width = "200">
-    <img src="images/part1_image2.jpeg" width = "200">
+    <div class="images-row">
+        <img src="images/part1_image1.jpeg" class="small-img" alt="Part 1 Image 1">
+        <img src="images/part1_image2.jpeg" class="small-img" alt="Part 1 Image 2">
+    </div>
 
     <!-- Part 2 -->
     <h2>Part 2</h2>
     <p>Here are some images for Part 2:</p>
-    <img src="images/part2_image1.jpeg" width = "200">
-    <img src="images/part2_image2.jpeg" width = "200">
+    <div class="images-row">
+        <img src="images/part2_image1.jpeg" class="small-img" alt="Part 2 Image 1">
+        <img src="images/part2_image2.jpeg" class="small-img" alt="Part 2 Image 2">
+    </div>
 
     <!-- Part 3 -->
     <h2>Part 3</h2>
     <p>Here’s a GIF demonstrating Part 3:</p>
-    <img src="images/part3_animation.gif" class="gif">
+    <img src="images/part3_animation.gif" class="gif" alt="Part 3 GIF">
 
     <p>Back to <a href="../index.html">Portfolio</a></p>
 </body>
 </html>
-
