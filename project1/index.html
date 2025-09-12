@@ -6,12 +6,10 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             line-height: 1.6;
-            text-align: left;
             max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 20px auto;
+            text-align: left;
         }
         h1 {
             color: #2c3e50;
@@ -40,11 +38,11 @@
         Since elementary school, we’ve learned that a small set of primary colors can combine to produce the full spectrum of visible colors. Before color photography existed, images were captured in black and white. However, the same scene could be recorded at different intensities of red, green, and blue light. Photographer Sergei Prokudin-Gorskii took advantage of this by capturing three separate exposures, one for each RGB channel, allowing us to reconstruct fully colored photographs.
     </p>
 
-    <h1>Approach</h1>
+    <h2>Approach</h2>
 
     <h3>Simple Approach</h3>
     <p>
-        After dissecting the original image to get the three color channels, I first dealt with the smaller image cases. I created a sliding window approach using the blue channel as a reference for both red and green. By comparing sections of the blue channel with windows on the R/G channels, the alignment with the lowest loss or highest similarity was selected. This works because regions with high intensity in one channel generally correspond to high intensity in the others.
+        After dissecting the original image to get the three color channels, I first dealt with smaller images. I created a sliding window approach using the blue channel as a reference for both red and green. By comparing sections of the blue channel with windows on the R/G channels, the alignment with the lowest loss or highest similarity was selected. This works because regions with high intensity in one channel generally correspond to high intensity in the others.
     </p>
     <p>
         Initially, I used the Euclidean difference (L2 norm) between pixels to evaluate alignment. Later, I used the normalized cross-correlation (NCC) norm, which improved results for smaller images. The search window was initially large (-40 to 40 px), but recursion allowed smaller search ranges (-15 to 15 px or even -4 to 4 px) for efficiency. Cropping borders further reduced misalignment due to edge artifacts.
