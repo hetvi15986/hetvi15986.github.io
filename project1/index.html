@@ -9,6 +9,9 @@
             margin: 20px;
             line-height: 1.6;
             text-align: left;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
         h1 {
             color: #2c3e50;
@@ -17,11 +20,11 @@
         h2 {
             color: #8e1600;
             text-align: center;
+            margin-top: 20px;
         }
         h3 {
             color: #000000;
-            text-align: left;
-            margin: 20px 0;
+            margin: 20px 0 10px 0;
         }
         p {
             margin: 10px 0;
@@ -31,9 +34,33 @@
 <body>
     <h1>Project 1</h1>
     <h2>Images of the Russian Empire -- Colorizing the Prokudin-Gorskii Photo Collection</h2>
+
     <h3>Motivation</h3>
     <p>
-        Since elementary school, we’ve learned that a small set of primary colors can combine to produce the full spectrum of colors that are visible to us. But before color photography existed, images were captured in black and white. However, the same scene could be recorded at different intensities of red, green, and blue light. Photographer Sergei Prokudin-Gorskii took advantage of this by capturing three separate exposures, one for each RGB channel, allowing us in the future to reconstruct fully colored photographs.
+        Since elementary school, we’ve learned that a small set of primary colors can combine to produce the full spectrum of visible colors. Before color photography existed, images were captured in black and white. However, the same scene could be recorded at different intensities of red, green, and blue light. Photographer Sergei Prokudin-Gorskii took advantage of this by capturing three separate exposures, one for each RGB channel, allowing us to reconstruct fully colored photographs.
+    </p>
+
+    <h1>Approach</h1>
+
+    <h3>Simple Approach</h3>
+    <p>
+        After dissecting the original image to get the three color channels, I first dealt with the smaller image cases. I created a sliding window approach using the blue channel as a reference for both red and green. By comparing sections of the blue channel with windows on the R/G channels, the alignment with the lowest loss or highest similarity was selected. This works because regions with high intensity in one channel generally correspond to high intensity in the others.
+    </p>
+    <p>
+        Initially, I used the Euclidean difference (L2 norm) between pixels to evaluate alignment. Later, I used the normalized cross-correlation (NCC) norm, which improved results for smaller images. The search window was initially large (-40 to 40 px), but recursion allowed smaller search ranges (-15 to 15 px or even -4 to 4 px) for efficiency. Cropping borders further reduced misalignment due to edge artifacts.
+    </p>
+
+    <h3>Image Pyramid Approach</h3>
+    <p>
+        The one-pass brute-force method was too slow for large images. Using an image pyramid (downscale by 0.5, upscale by 2), I aligned a smaller version first, then refined the alignment recursively at higher resolutions. A challenge was handling odd dimensions during rescaling; pixels could get truncated, so I returned shift values rather than rescaled images to maintain consistency.
+    </p>
+    <p>
+        Some images, like emir.tif, required larger shifts, possibly due to camera angle or differences in channel sensitivity, especially in blue. I also experimented with Sobel edge detection to align based on edges, then applied the calculated shifts to the actual RGB channels.
+    </p>
+
+    <h3>Overall</h3>
+    <p>
+        Recursion worked well, though index bounds were sometimes tricky. I also explored additional images of cotton mills, which relate to my family history in the textile industry. Seeing the machinery in these photographs connects to the era my grandfather worked in and how the textile industry shaped our family's journey.
     </p>
 </body>
 </html>
