@@ -2,16 +2,95 @@
 <html>
 <head>
     <title>My Portfolio</title>
+
+    <style>
+@import "compass/css3";
+
+@mixin flag($color:red, $width:30em, $height:12em, $direction:right, $offset:4em) {
+  $point-size: $height/2;
+  width: $width;
+  height: $height;
+  position: relative;
+  span {
+    background: $color;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index:2;
+  }
+  &:before{
+    width: 0px; height: 0px;
+    content: ' ';
+    position: absolute;
+    z-index:1;
+    #{$direction}: -#{$point-size};
+    border: {
+      style: solid;
+      width: $point-size;
+      color: darken($color, 2);
+    };
+    border-left-color: darken($color, 5);
+    border-right-color: transparent;
+    
+  }
+  &:before {
+    top: $offset;
+    border-top-color: darken($color, 2);
+    border-bottom-color: darken($color, 2);
+    border-left-color: darken($color, 5);
+  }
+}
+  
+.flag{ 
+    @include flag(green, $height:2em, $width:80%, $offset:.4em ); 
+          
+    font-size: 8em;
+    line-height: 2em;
+    text-align: center;
+    color: white;
+    text-shadow: -3px 3px darken(green, 7);
+}
+.glow-text {
+    color: rgb(227, 249, 229);
+    text-shadow: 2px 2px 4px black;
+}
+</style>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Optima, sans-serif;
+            margin: 0;
+        }
+        
+
+        .banner {
+            background-color: #721d1d;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* subtle shadow */
+        }
+
+        .content {
             margin: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to My CS180 Portfolio!</h1>
-    <a href="./project0_new/index.html">Project 0</a>
-    <a href="./project1/index.html">Project 1</a>
+    <div class="banner">
+        <h2 class="glow-text">Welcome to My CS180 Portfolio!</h2>
+    </div>
+
+
+    <div class="content">
+        <h1>Projects</h1>
+        <a href="./project0_new/index.html">Project 0</a><br>
+        <a href="./project1/index.html">Project 1</a>
+        
+    </div>
+    
 </body>
 </html>
