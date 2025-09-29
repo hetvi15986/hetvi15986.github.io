@@ -71,6 +71,23 @@
             height: auto;
             display: block;
         }
+        .image-column {
+            display: flex;
+            flex-direction: column; 
+            gap: 20px;      
+            align-items: center;
+        }
+
+        .image-column figure {
+            margin: 0;
+            text-align: center;
+        }
+
+        .image-column img {
+            max-width: 90%;  
+            height: auto;
+            display: block;
+        }
 
     </style>
 </head>
@@ -293,9 +310,9 @@
         </div>
         <p> Now, I can sharpen by differing alpha </p>
         <div class="image-row">
-            <figure> <img src="pt2.1/b3/b3.sharp_alpha1.png"> <figcaption> alpha = 1 </figcaption> </figure>
-            <figure> <img src="pt2.1/b3/b3.sharp_alpha2.png"> <figcaption> alpha = 2 </figcaption> </figure>
-            <figure> <img src="pt2.1/b3/b3.sharp_alpha3.png"> <figcaption> alpha = 3 </figcaption> </figure>
+            <figure> <img src="pt2.1/b3/b3_sharp_alpha1.png"> <figcaption> alpha = 1 </figcaption> </figure>
+            <figure> <img src="pt2.1/b3/b3_sharp_alpha2.png"> <figcaption> alpha = 2 </figcaption> </figure>
+            <figure> <img src="pt2.1/b3/b3_sharp_alpha3.png"> <figcaption> alpha = 3 </figcaption> </figure>
         </div>
         <p> You can attain the same results by doing a single convolution per channel by creating an unsharpening kernel (1+alpha)*identity - alpha*gaussian_kernel (as seen in lecture) </p>
         <div class="image-row">
@@ -311,28 +328,150 @@
 
 
 <h3> Part 2.2: Hybrid Images </h3>
+        <h4> Derek and Nutmeg </h4>
+        <div class="image-row">
+            <figure> <img src="pt2.2/one/DerekPicture.jpg"> <figcaption> Derek </figcaption> </figure>
+            <figure> <img src="pt2.2/one/nutmeg.jpg"> <figcaption> Nutmeg </figcaption> </figure>
+        </div>
+        <div class="image-row">
+            <figure> <img src="pt2.2/one/fft/im1_fft.png"> <figcaption> Derek </figcaption> </figure>
+            <figure> <img src="pt2.2/one/fft/im2_fft.png"> <figcaption> Nutmeg </figcaption> </figure>
+        </div>
 
 
+        <p> First, I aligned them using given helper functions. </p>
+        <div class="image-row">
+            <figure> <img src="pt2.2/one/im1_aligned.png"> <figcaption> Derek, aligned </figcaption> </figure>
+            <figure> <img src="pt2.2/one/im2_aligned.png"> <figcaption> Nutmeg, aligned </figcaption> </figure>
+        </div>
+        <div class="image-row">
+            <figure> <img src="pt2.2/one/fft/im1_aligned_fft.png"> <figcaption> Derek, aligned </figcaption> </figure>
+            <figure> <img src="pt2.2/one/fft/im2_aligned_fft.png"> <figcaption> Nutmeg, aligned </figcaption> </figure>
+        </div>
 
 
+        <p> I grayscale both images. Then, I attained the low frequencies of Derek's image using a Gaussian kernel, since I want him to be seen from far. 
+            I also attained the high frequencies of Nutmeg, since I want to see Nutmeg from up close, by convolving the image with unit impulse kernel minus the Gaussian. </p>
+        <div class="image-row">
+            <figure> <img src="pt2.2/one/im1_aligned_lowfreq.png"> <figcaption> Derek, aligned and blurred (low frequency) </figcaption> </figure>
+            <figure> <img src="pt2.2/one/im2_aligned_highfreq.png"> <figcaption> Nutmeg, aligned and 'sharp' (high frequency) </figcaption> </figure>
+        </div>
+            <figure> <img src="pt2.2/one/fft/im1_aligned_lowfreq_fft.png"> <figcaption> Derek, aligned and blurred (low frequency) </figcaption> </figure>
+            <figure> <img src="pt2.2/one/fft/im2_aligned_highfreq_fft.png"> <figcaption> Nutmeg, aligned and 'sharp' (high frequency) </figcaption> </figure>
+        </div>
+        <h5> Upclose: Nutmeg (cat) , Far: Derek (owner) </h5>
+        <p> Then, I blended the two together by adding them. I chose cutoff frequencies by trial and error, looking at the images, though the cutoff is reflected by the difference of wavelength distribution in the fourier transform graphs as well. </p>
+        </div>
+            <figure> <img src="pt2.2/one/hybrid.png"> <figcaption> Hybrid </figcaption> </figure>
+            <figure> <img src="pt2.2/one/fft/hybrid_fft.png"> <figcaption> Hybrid, Fourier </figcaption> </figure>
+        </div>
 
+        <h4> Then and Now: Dolly Parton </h4>
+        <h5> Upclose: Dolly Parton today, Far: Dolly Parton then </h5>
+        <div class="image-row">
+            <figure> <img src="pt2.2/three/then.png"> <figcaption> Far: Dolly Parton then (low freq) </figcaption> </figure>
+            <figure> <img src="pt2.2/three/today.png"> <figcaption> Close: Dolly Parton now (high freq)  </figcaption> </figure>
+            <figure> <img src="pt2.2/three/hybrid.png"> <figcaption> Hybrid Image </figcaption> </figure>
 
+        </div>
 
+        <h4> "Then and Now": Spidermans</h4>
+        <h5> Upclose: Tom Holland, Far: Andrew Garfield </h5>
+        <div class="image-row">
+            <figure> <img src="pt2.2/two/ag.jpg"> <figcaption> Far: Andrew Garfield (low freq) </figcaption> </figure>
+            <figure> <img src="pt2.2/two/th.jpg"> <figcaption> Close: Tom Holland (high freq)  </figcaption> </figure>
+            <figure> <img src="pt2.2/two/hybrid.png"> <figcaption> Hybrid Image </figcaption> </figure>
 
-
-
+        </div>
 
 
 <h2> Multi-resolution Blending and the Oraple journey </h2>
 <h3> Part 2.3: Gaussian and Laplacian Stacks </h3>
+<p> Here, we implement Gaussian and Laplacian Stacks from Scratch. </p>
+        <h4> Orange + Apple = Oraple </h4>
+
+        <div class="image-row">
+            <figure> <img src="pt2.4/spline/apple.jpeg"> <figcaption> Apple </figcaption> </figure>
+            <figure> <img src="pt2.4/spline/final.png"> <figcaption> Blend (regular straight mask)  </figcaption> </figure>
+            <figure> <img src="pt2.4/spline/orange.jpeg"> <figcaption> Orange </figcaption> </figure>
+
+        </div>
+
+        <h5> How? Depths = 9, sigma = 1 </h5>
+        
+        <figure> <img src="pt2.4/spline/avg_contributions_0.png" > <figcaption> depth: 0 </figcaption> </figure>
+        <figure> <img src="pt2.4/spline/avg_contributions_1.png" > <figcaption> depth: 1 </figcaption> </figure>
+        <figure> <img src="pt2.4/spline/avg_contributions_2.png" > <figcaption> depth: 2 </figcaption> </figure>
+        <figure> <img src="pt2.4/spline/avg_contributions_3.png" > <figcaption> depth: 3 </figcaption> </figure>
+        <figure> <img src="pt2.4/spline/avg_contributions_4.png" > <figcaption> depth: 4 </figcaption> </figure>
+        <figure> <img src="pt2.4/spline/avg_contributions_5.png" > <figcaption> depth: 5 </figcaption> </figure>
+        <figure> <img src="pt2.4/spline/avg_contributions_6.png" > <figcaption> depth: 6 </figcaption> </figure>
+        <figure> <img src="pt2.4/spline/avg_contributions_7.png" > <figcaption> depth: 7 </figcaption> </figure>
+        <figure> <img src="pt2.4/spline/avg_contributions_8.png" > <figcaption> depth: 8 </figcaption> </figure>
+    
+    
+        <h5> Average Contributions Summed: </h5>
+        <figure> <img src="pt2.4/spline/avg_contributions_summed.png" > <figcaption> Sum </figcaption> </figure>
+
+        <h5> Cummulative Blend: </h5>
+        <figure> <img src="pt2.4/spline/cumulative_blend_strip.png" > <figcaption> Blending over time </figcaption> </figure>
+
+
 
 <h3> Part 2.4: Multiresolution Blending (a.k.a. the oraple!) </h3>
 
+<h4> I Am Iron Man </h4>
+        <h5> Iron Man Suit and Iron Man, regular straight mask </h5>
 
+        <div class="image-row">
+            <figure> <img src="pt2.4/mcu/ironman.png"> <figcaption> Iron Man </figcaption> </figure>
+            <figure> <img src="pt2.4/mcu/final.png"> <figcaption> Blend (regular straight mask)  </figcaption> </figure>
+            <figure> <img src="pt2.4/mcu/tony.png"> <figcaption> Tony Stark </figcaption> </figure>
 
+        </div>
 
+        <h5> How? Depths = 11, sigma 0.5 </h5>
+        
+        <figure> <img src="pt2.4/mcu/avg_contributions_0.png" > <figcaption> depth: 0 </figcaption> </figure>
+        <figure> <img src="pt2.4/mcu/avg_contributions_1.png" > <figcaption> depth: 1 </figcaption> </figure>
+        <figure> <img src="pt2.4/mcu/avg_contributions_2.png" > <figcaption> depth: 2 </figcaption> </figure>
+        <figure> <img src="pt2.4/mcu/avg_contributions_3.png" > <figcaption> depth: 3 </figcaption> </figure>
+        <figure> <img src="pt2.4/mcu/avg_contributions_4.png" > <figcaption> depth: 4 </figcaption> </figure>
+        <figure> <img src="pt2.4/mcu/avg_contributions_5.png" > <figcaption> depth: 5 </figcaption> </figure>
+        <figure> <img src="pt2.4/mcu/avg_contributions_6.png" > <figcaption> depth: 6 </figcaption> </figure>
+        <figure> <img src="pt2.4/mcu/avg_contributions_7.png" > <figcaption> depth: 7 </figcaption> </figure>
+        <figure> <img src="pt2.4/mcu/avg_contributions_8.png" > <figcaption> depth: 8 </figcaption> </figure>
+        <figure> <img src="pt2.4/mcu/avg_contributions_9.png" > <figcaption> depth: 9 </figcaption> </figure>
+        <figure> <img src="pt2.4/mcu/avg_contributions_10.png" > <figcaption> depth: 10 </figcaption> </figure>
+    
+        <h5> Cummulative Blend: </h5>
+        <figure> <img src="pt2.4/mcu/cumulative_blend_strip.png" > <figcaption> Blending over time </figcaption> </figure>
 
+<h4> Eh-oh! </h4>
+        <h5> Teletubby Sun and a Labubu </h5>
 
+        <div class="image-row">
+            <figure> <img src="pt2.4/mcu/ironman.png"> <figcaption> Iron Man </figcaption> </figure>
+            <figure> <img src="pt2.4/mcu/final.png"> <figcaption> Blend (regular straight mask)  </figcaption> </figure>
+            <figure> <img src="pt2.4/mcu/tony.png"> <figcaption> Tony Stark </figcaption> </figure>
+
+        </div>
+
+        <h5> How? Depths = 9, sigma 0.5 </h5>
+        
+        <figure> <img src="pt2.4/horror/avg_contributions_0.png" > <figcaption> depth: 0 </figcaption> </figure>
+        <figure> <img src="pt2.4/horror/avg_contributions_1.png" > <figcaption> depth: 1 </figcaption> </figure>
+        <figure> <img src="pt2.4/horror/avg_contributions_2.png" > <figcaption> depth: 2 </figcaption> </figure>
+        <figure> <img src="pt2.4/horror/avg_contributions_3.png" > <figcaption> depth: 3 </figcaption> </figure>
+        <figure> <img src="pt2.4/horror/avg_contributions_4.png" > <figcaption> depth: 4 </figcaption> </figure>
+        <figure> <img src="pt2.4/horror/avg_contributions_5.png" > <figcaption> depth: 5 </figcaption> </figure>
+        <figure> <img src="pt2.4/horror/avg_contributions_6.png" > <figcaption> depth: 6 </figcaption> </figure>
+        <figure> <img src="pt2.4/horror/avg_contributions_7.png" > <figcaption> depth: 7 </figcaption> </figure>
+        <figure> <img src="pt2.4/horror/avg_contributions_8.png" > <figcaption> depth: 8 </figcaption> </figure>
+
+    
+        <h5> Cummulative Blend: </h5>
+        <figure> <img src="pt2.4/horror/cumulative_blend_strip.png" > <figcaption> Blending over time </figcaption> </figure>
 
 
 
