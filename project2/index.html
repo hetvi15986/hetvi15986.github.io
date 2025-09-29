@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        h1 {
+            color: #530f0f;
+            text-align: center;
+            
+        }
+        h2 {
+            color: #8e1600;
+            text-align: center;
+            margin-top: 20px;
+        }
+        h3 {
+            color: #804141;
+            margin: 20px 10px 10px 10px;
+            text-align: center;
+        }
+        h4 {
+            color: #664848;
+            margin: 20px 10px 10px 10px;
+        }
+        h5 {
+            color: #a26b6b;
+            margin: 20px 10px 10px 10px;
+        }
+        p {
+            margin: 20px 10px 10px 10px;
+        }
+        
+        img {
+            max-width: 400px;
+            height: auto;
+            margin: 20px 10px 10px 10px;
+
+        }
+
+        figure {
+            text-align: center; /* centers both image and caption */
+            margin: 20px 0;
+        }
+        figcaption {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+
+<body>
+<h1>Project 2: Fun With Filters and Frequencies</h1>
+
+<h2> Part 1: Fun with Filters</h2>
+
+
+<h3> Part 1.1: Convolutions from Scratch! </h3>
+
+<h4> A: Four For Loops </h4>
+
+    <p>Idea: Convolve img with a kernel using four loops: one for every x,y in image and every u,v in kernel.</p>
+    <figure>
+        <img src="pt1.1/fourloops.png" alt="full code" width="400">
+        <figcaption> Four For Loops Convolution </figcaption>
+    </figure>
+    <p>Due to zero-padding, calculating the kernels/image offsets was pretty tricky!</p>
+    <figure>
+        <img src="pt1.1/four_ss.png" alt="padding indexing" width="400">
+        <figcaption> Four For Loops, showing padding index offsets </figcaption>
+    </figure>
+
+<h4> B: Two For Loops </h4>
+
+    <p>Idea: Vectorization Idea: Convolve img with a kernel using two loops: one for every x,y in image, by directly calculating the dot product between the kernel and image patch that corresponds to the ith pixel in the desired output image.</p>
+    <figure>
+        <img src="pt1.1/two_ss.png" alt="Sample Image" width="400">
+        <figcaption> Two For Loops Convolution </figcaption>
+    </figure>
+
+<h4> C: Use built-in convolution function scipy.signal.convolve2d </h4>
+
+    <p>Idea: Convolve img with the built-in function nested in another to aid in calculating running time, and compare outputs and runtimes.</p>
+    <figure>
+        <img src="pt1.1/builtin_ss.png" alt="Sample Image" width="400">
+        <figcaption> Two For Loops Convolution </figcaption>
+    </figure>
+
+<h4> D: Results for picture of me:   </h4>
+    <p> Idea: Convolve a grayscale image of myself with the functions, and compare outputs and runtimes. </p>
+    <h5> With Four Forloops  </h5>
+        <div class="image-row">
+            <figure> <img src="pt1.1/hp.png"> <figcaption>original image</figcaption> </figure>
+            <figure>
+                <img src="pt1.1/output_images/hp_four_box.png">
+                <figcaption> 9x9 BoxFilter Convolution with Four For Loops Implementation</figcaption>
+            </figure>
+            <figure>
+                <img src="https://via.placeholder.com/200" alt="Image 3">
+                <figcaption>Caption 3</figcaption>
+            </figure>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Part 2: Fun with Frequencies</h2>
+
+
+
+
+</body>
+
+
+
+
+</html>
