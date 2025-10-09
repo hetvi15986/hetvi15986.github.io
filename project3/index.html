@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project 2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        h1 {
+            color: #530f0f;
+            text-align: center;
+            
+        }
+        h2 {
+            color: #8e1600;
+            text-align: center;
+            margin-top: 20px;
+        }
+        h3 {
+            color: #804141;
+            margin: 20px 10px 10px 10px;
+            text-align: center;
+        }
+        h4 {
+            color: #664848;
+            margin: 20px 10px 10px 10px;
+        }
+        h5 {
+            color: #a26b6b;
+            margin: 20px 10px 10px 10px;
+        }
+        p {
+            margin: 20px 10px 10px 10px;
+        }
+        
+        img {
+            max-width: 400px;
+            height: auto;
+            margin: 20px 10px 10px 10px;
+
+        }
+
+        figure {
+            text-align: center; /* centers both image and caption */
+            margin: 20px 0;
+        }
+        figcaption {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+            color: #555;
+            margin-top: 5px;
+        }
+        .image-row {
+            display: flex;         
+            gap: 20px;             
+            flex-wrap: wrap;       
+            justify-content: center; 
+        }
+        .image-row figure {
+            margin: 0;
+            text-align: center;
+            flex: 0 1 200px;       
+        }
+        .image-row img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .image-column {
+            display: flex;
+            flex-direction: column; 
+            gap: 20px;      
+            align-items: center;
+        }
+
+        .image-column figure {
+            margin: 0;
+            text-align: center;
+        }
+
+        .image-column img {
+            max-width: 90%;  
+            height: auto;
+            display: block;
+        }
+
+    </style>
+</head>
+
+<body>
+<h1>Project 3: [Auto]Stitching Photo Mosaics</h1>
+
+<h2> Part A: IMAGE WARPING and MOSAICING </h2>
+
+
+<h3> A.1: Shoot the Pictures </h3>
+<p> Take two sets of photos, each set a projective transformation (fixed center of projection: the camera rotates, no translation). </p>
+<h4> Set 1: Doe Library and Memorial Glade </h4>
+<div class="image-row">
+    <figure>
+        <img src="images/two.jpeg" alt="Set 1 Image 1">
+        <figcaption>Set 1 Image 1</figcaption>
+    </figure>
+    <figure>
+        <img src="images/five.jpeg" alt="Set 1 Image 2">
+        <figcaption>Set 1 Image 2</figcaption>
+    </figure>
+</div class="image-row"></div>
+<h4> Set 2: Concrete Wall </h4>
+<div class="image-row">
+    <figure>
+        <img src="images/concrete1.png" alt="Set 2 Image 1">
+        <figcaption>Set 2 Image 1</figcaption>
+    </figure>
+    <figure>
+        <img src="images/concrete2.png" alt="Set 2 Image 2">
+        <figcaption>Set 2 Image 2</figcaption>
+    </figure>
+</div class="image-row"></div>
+
+
+
+<h3> A.2: Recover Homographies </h3>
+<p> Write a function of the form H = computeH(im1_pts,im2_pts) to compute the 3x3 homography matrix. </p>
+
+<p> First, identify corresponding points between the two images you want to find the homography matrix between. </p>
+
+<p> To find the homography matrix H between two images, we must find the least squares solution to AH = B where A is the N by 2 matrix of the coordinates of the N points in the first image, B is the N by 2 matrix of the coordinates of the points in the second image you want to map image1 to, and H is the 3 by 3 homography matrix we want to solve for.</p>
+<p> To solve for H,you can use least squares, or SVD (which I used, to solve for the first 8 values of H, and then appended h9 = 1 to). </p>
+
+<h4> Doe Library Image: Correspondances from the Correspondance Tool </h4>
+<p> Points from the left image: im1_pts_a = [[2801,1926],[2669,1801],[1793,1814],[3379,2750],[3215,2854],[3261,2486],[3345,2187],[3721,2735],[3977,2677],[4102,2636],[3794,4127],[3840,4362],[4065,4391],[3975,4142],[3368,4300],[3366,4385],[3157,4354],[3118,4287],[3257,4243],[2949,5113],[2930,5288],[2632,5229],[2689,5050],[3020,5364],[3333,5437],[2980,5588],[3318,5658],[3254,3055],[3954,3316],[2701,3003],[2198,3515],[2735,3698],[1908,3594],[2378,3775],[2165,3408],[3023,1806],[2827,4334],[2384,4298],[2031,4197],[2085,3071],[2550,3285]] </p>
+<p> Points from the right image: im2_pts_b = [[1229,1872],[1084,1733],[69,1680],[1827,2700],[1684,2804],[1713,2449],[1778,2162],[2123,2681],[2332,2624],[2433,2590],[2218,3942],[2271,4159],[2450,4159],[2372,3943],[1851,4173],[1851,4254],[1663,4259],[1621,4192],[1750,4135],[1485,5034],[1459,5214],[1166,5230],[1217,5041],[1547,5261],[1844,5270],[1532,5491],[1851,5478],[1713,2995],[2328,3192],[1181,2979],[631,3546],[1239,3677],[294,3677],[842,3803],[588,3442],[1446,1770],[1332,4291],[870,4348],[460,4302],[482,3082],[1029,3274]]</p>
+
+<h4> Plotted: </h4>
+<figure>
+        <img src="images/correspondances.png" alt="Image Correspondances">
+        <figcaption>Image Correspondances</figcaption>
+</figure>
+
+<h4> System of Eqns (solve for h values): </h4>
+<figure>
+        <img src="images/systofeqns.png" alt="SOE">
+        <figcaption>System of Equations</figcaption>
+</figure>
+
+<h4> Compute the Homography Matrix: H = computeH(im1_pts_a, im1_pts_b) </h4>
+<p> Homography Matrix H: </p>
+<figure>
+        <img src="images/Hmatrix.png" alt="H Matrix">
+        <figcaption>H = computeH(im1_pts_a, im1_pts_b)</figcaption>
+</figure>
+
+
+
+<h3> A.3: Wrap the Images </h3>
+
+<p> Implement warpImageNearestNeighbor(im,H) and warpImageBilinear(im,H)</p>
+
+<h4> I: NYC HighLine </h4>
+<figure>
+        <img src="images/nyc.png" >
+        <figcaption> NYC HighLine Appartment</figcaption>
+</figure>
+
+<h4> II: Sign </h4>
+<figure>
+        <img src="images/sign.png" style="width:700px; height:auto;" >
+        <figcaption> An informative sign </figcaption>
+</figure>
+
+<h4> II: Doe Tiles </h4>
+<figure>
+        <img src="images/doetiles.png" >
+        <figcaption> the tiles of doe from an aerial view </figcaption>
+</figure>
+
+<h3> A.4: Blending the Images to Mosaic </h3>
+
+
+<h4>   Projecting The left image on the right </h4>
+<figure>
+        <img src="images/doe3.png" >
+        <figcaption> however, it appears too cropped </figcaption>
+</figure>
+
+<p> Binary Interpolation generally has more visually appealing results, and seems more smooth. </p>
+
+<h4> Alignment </h4>
+<p> Using the H to transform the known points to their new offset ploints, I can align the images. </p>
+<p> To blend, I employ a alpha-mask and guassian blending. </p>
+<figure>
+        <img src="images/correspondances.png" alt="Image Correspondances">
+        <figcaption>Image Correspondances</figcaption>
+</figure>
+<figure>
+        <img src="images/doe 4.png" >
+        <figcaption> </figcaption>
+</figure>
+<figure>
+        <img src="images/doeblended4.png" >
+        <figcaption> </figcaption>
+</figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+
+</html>
+
