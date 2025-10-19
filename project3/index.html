@@ -131,7 +131,7 @@
 <p> First, identify corresponding points between the two images you want to find the homography matrix between. </p>
 
 <p> To find the homography matrix H between two images, we must find the least squares solution to AH = B where A is the N by 2 matrix of the coordinates of the N points in the first image, B is the N by 2 matrix of the coordinates of the points in the second image you want to map image1 to, and H is the 3 by 3 homography matrix we want to solve for.</p>
-<p> To solve for H,you can use least squares, or SVD (which I used, to solve for the first 8 values of H, and then appended h9 = 1 to). </p>
+<p> To solve for H,you can use least squares, or SVD (which I used, to solve for the first 8 values of H, and then appended h9 = 1 to, as it was more robust). Least squares gives very similar results, though (in practice, the same for images where I used plenty of correspondances). </p>
 
 <h4> Doe Library Image: Correspondances from the Correspondance Tool </h4>
 <p> Points from the left image: im1_pts_a = [[2801,1926],[2669,1801],[1793,1814],[3379,2750],[3215,2854],[3261,2486],[3345,2187],[3721,2735],[3977,2677],[4102,2636],[3794,4127],[3840,4362],[4065,4391],[3975,4142],[3368,4300],[3366,4385],[3157,4354],[3118,4287],[3257,4243],[2949,5113],[2930,5288],[2632,5229],[2689,5050],[3020,5364],[3333,5437],[2980,5588],[3318,5658],[3254,3055],[3954,3316],[2701,3003],[2198,3515],[2735,3698],[1908,3594],[2378,3775],[2165,3408],[3023,1806],[2827,4334],[2384,4298],[2031,4197],[2085,3071],[2550,3285]] </p>
