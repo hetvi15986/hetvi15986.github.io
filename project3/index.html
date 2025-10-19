@@ -288,7 +288,45 @@ My final canvas had to be size (8035, 5575) with offsets (-2926, -1141). </p>
 <h3> B.1: Harris Corner Detection </h3>
 
 
+<p> The idea behind finding corners automatically follows from the notion that they're points of interest, as they should be identifiable when matching points across images. 
+    They're also often areas with the most rapid change from their surroundings.  </p>
+    <p> First, I used the given Harris Corner Detector to locate all of the possible points that could be corners. There's thousands, most are with weak responses and won't ever be considered true corners. So, I thresholded out incredibly weak signals. </p>
+
+<h4> ALL Harris Corners Detected (thousands) </h4>
+
+<figure>
+        <img src="images/B/allHarris.png" >
+        <figcaption> All Harris Corners Detected on L/R Images of taken from Doe </figcaption>
+</figure>
+
+<h4> Thresholded Harris Corners Detected (less) </h4>
+    <p> To better understand the corners detected, I thresholded the corners to include only those with a response rate greater than 1% of the maximum response rate. I was able to see which parts of the image are best to find correspondances between pictures in. However, parts of the sky were largely left blank (low response in corner detection), which is unideal when trying to automate feature matching in the case that a lot of the image has blank space. </p>
+<figure>
+        <img src="images/B/boundedHarris.png" >
+        <figcaption> 1% of max response threshold </figcaption>
+</figure>
+
+<h4> Points of Interest with Adaptive Non-Maximal Suppression (ANMS) </h4>
+    <p>To get a more evenly distributed display of points of interest, I implemented Adaptive Non-Maximal Suppression (ANMS). This is much better for implementing autostitching, as no large areas are left blank without any points of interest. </p>
+<figure> <img src="images/B/ANMS.png" > <figcaption> Adaptive Non-Maximal Suppression Points of Interest </figcaption> </figure>
+
+
+
 <h3> B.2: Feature Descriptor Extraction </h3>
+    <p> For each of the n = 500 points of Interest in both the left and right images, I extracted a feature Descriptor for each.</p>
+    <h4> Left Image (10 Feature Descriptors) </h4>
+    <figure> <img src="images/B/10LeftDescriptor.png" > </figcaption> </figure>
+
+    <h4> Right Image (10 Feature Descriptors) </h4>
+        <figure> <img src="images/B/10RightDescriptor.png" > </figcaption> </figure>
+
+    <h4> Array for all 500 Features Descriptors, for both the Left and Right </h4>
+
+<div class="image-row">
+    <figure> <img src="images/B/allLeftDescriptor.png"> <figcaption> Left </figcaption></figure>
+
+    <figure> <img src="images/B/allRightDescriptor.png">  <figcaption> Right </figcaption> </figure>
+</div class="image-row"></div>
 
 
 
