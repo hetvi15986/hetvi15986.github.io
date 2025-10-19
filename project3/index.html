@@ -160,7 +160,8 @@
 
 <h3> A.3: Wrap the Images </h3>
 
-<p> Implement warpImageNearestNeighbor(im,H) and warpImageBilinear(im,H)</p>
+<p> Task: Implement warpImageNearestNeighbor(im,H) and warpImageBilinear(im,H)</p>
+<p> Results: Binary Interpolation generally has more visually appealing results if the image is fairly small, and appears more smooth with less hard cut lines. However, if the image is large enough, it's tough to notice a difference between the two. </p>
 
 <h4> I: NYC HighLine </h4>
 <figure>
@@ -174,14 +175,25 @@
         <figcaption> An informative sign </figcaption>
 </figure>
 
-<h4> II: Doe Tiles </h4>
+<h4> III: Doe Tiles </h4>
 <figure>
         <img src="images/doetiles.png" >
         <figcaption> the tiles of doe from an aerial view </figcaption>
 </figure>
 
-<h3> A.4: Blending the Images to Mosaic </h3>
+<h4> Using the Alpha Channel to Capture the Entire Projection </h4>
+<p> I calculated the bound box of the rectified image using the homography on the original image's corners, projecting the corners in order to find the bounds of the complete picture. 
+    Implementing this step here was crucial in capturing valuable information and for the next steps: Stitching images together. 
+    It's also insightful in visualizing the perspective transformation H actually performs on the rectangular input image. </p>
+<div class="image-column">
+    <figure> <img src="images/nycfull.png"> </figure>
+    <figure> <img src="images/signfull.png"> </figure>
+    <figure> <img src="images/doetilesfull.png"> </figure>
+</div class="image-row"></div>
 
+
+<h3> A.4: Blending the Images to Mosaic </h3>
+<p>  Again, I used pictures taken in front of Doe. </p>
 
 <h4>   Projecting The left image on the right </h4>
 <figure>
@@ -189,24 +201,43 @@
         <figcaption> however, it appears too cropped </figcaption>
 </figure>
 
-<p> Binary Interpolation generally has more visually appealing results, and seems more smooth. </p>
+<p> Using the H to transform the known points to their new offset ploints, I can align the images. The Homography was shown in part A.2 </p>
+<p> Because I didn't want the actual pixel values to be black, as this would later affect any blending or blurring. Also, the area in which the the homogrpahy was mapping the left image to was not retaining new information needed to create a panorama with the first image. </p>
+<p> So, I emplyed a bound box approach to calculate the full area needed to capture both images. Now, I could retain all pixel values from both images, and later blend them together using an alpha channel for easier blurring. </p>
+<figure> <img src="images/wrapleftdoe.png"> </figure>
 
 <h4> Alignment </h4>
-<p> Using the H to transform the known points to their new offset ploints, I can align the images. </p>
-<p> To blend, I employ a alpha-mask and guassian blending. </p>
-<figure>
-        <img src="images/correspondances.png" alt="Image Correspondances">
-        <figcaption>Image Correspondances</figcaption>
-</figure>
-<figure>
-        <img src="images/doe 4.png" >
-        <figcaption> </figcaption>
-</figure>
-<figure>
-        <img src="images/doeblended4.png" >
-        <figcaption> </figcaption>
-</figure>
+<figure> <img src="images/correspondances.png" alt="Image Correspondances"> </figure>
+<p> Using the same correspondance points from part A.2, I was able to align the images properly using the same homography matrix.
+    I warped the corners of the right image using H, solving for the largest size my image should be for me to stitch the two images together. 
+My final canvas had to be size (8035, 5575) with offsets (-2926, -1141). </p>
+<p> Then, I shifted the right image to be aligned toward the center of the canvas using a shift (using the offsets) and I shifted and applied the homography to warp the left image to be aligned to the center of the canvas as well. 
+    I also plotted the corner points to ensure the transformations I was warping with were as I expected. </p>
+</p>
+<div class="image-column">
+    <figure> <img src="images/doealigned.png"> </figure>
+    <figure> <img src="images/cornerdoe.png"> </figure>
+</div class="image-row"></div>
 
+<h4> Avg Weighting via Alpha Channel </h4>
+<p> Finally, I used the alpha mask to blend the images. I first made a mask for smoothe blending. Earlier, I had included alpha channels for left and right warped images, where a 0 meant there wasn't an image (transparency) there and a 1 meant there actual image pixels there (opaque).
+     To create the mask, I created a 2D array of distances, mapping each pixel to the nearest pixel that wasn't transparent, for both the left and right images.  
+     By normalizing, I created a map of weights in the range [0,1] I found a mapping of how much of the warped left image I wanted to incorporate into the stitched image. If the pixel was closer to the left image, the weight was closer to 1, meaning I wanted to include more of the left image. </p>
+
+<figure> <img src="images/50170651-07da-4da8-ab4f-1ee18924f318.png" > <figcaption> Alpha Mask </figcaption>  </figure>
+
+<p> Then, I blended together the two images using this alpha-channel based mask. For each pixel, the value at that location of the image is the value of the alpha mask at that image * the value of the left image + (1-alpha mask value) * value of the right image. </p>
+<figure>
+        <img src="images/Screenshot 2025-10-19 at 4.07.55 AM.png" width = "300px" >
+        <figcaption> Lecture: Blending an Image using Alpha Mask </figcaption>
+</figure>
+<p> This makes sense to use. If a point is strictly on the left image, it would have a corresponding alpha mask value of 1, and its value would be directly taken from the left image, and the right image would bear no impact on it since (1-alpha)=(1-1) is 0. If we wanted to mostly consider the left image and have the right image have some influence on the pixel's value, alpha would be larger for the left image (take the left image more into account) and the weight of the right image would be lower. </p>
+
+
+<figure>
+        <img src="images/blenddoe.png" >
+        <figcaption> Blended Doe </figcaption>
+</figure>
 
 
 
