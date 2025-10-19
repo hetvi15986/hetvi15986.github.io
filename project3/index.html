@@ -195,11 +195,9 @@
 <h3> A.4: Blending the Images to Mosaic </h3>
 <p>  Again, I used pictures taken in front of Doe. </p>
 
-<h4>   Projecting The left image on the right </h4>
-<figure>
-        <img src="images/doe3.png" >
-        <figcaption> however, it appears too cropped </figcaption>
-</figure>
+<h4> DOE </h4>
+    <h4> Projecting The left image on the right </h4>
+<figure> <img src="images/doe3.png" > </figure>
 
 <p> Using the H to transform the known points to their new offset ploints, I can align the images. The Homography was shown in part A.2 </p>
 <p> Because I didn't want the actual pixel values to be black, as this would later affect any blending or blurring. Also, the area in which the the homogrpahy was mapping the left image to was not retaining new information needed to create a panorama with the first image. </p>
@@ -238,6 +236,66 @@ My final canvas had to be size (8035, 5575) with offsets (-2926, -1141). </p>
         <img src="images/blenddoe.png" >
         <figcaption> Blended Doe </figcaption>
 </figure>
+
+<p> Looking closely, the middle of the image is blurry. However, this is expected, and the overall image looks like a proper stitch. </p>
+<p> We can also see some 'ghosts' as a result of the two images having people moving in the background, by East Asian Library and on Memorial Glade. </p>
+<p> The foreground however (the tile alignment, the person reading on the bench) looks pretty smooth. </p>
+
+<figure>
+        <img src="images/blendeddoe.png" >
+        <figcaption> Blended Doe </figcaption>
+</figure>
+
+
+<h4> Concrete Wall Image (with NearestNeighbors) </h4>
+<div class="image-column">
+    <figure> <img src="images/conc/init.png"> <figcaption> Left and Right Images of a Concrete Wall. </figcaption></figure>
+
+    <figure> <img src="images/conc/Screenshot 2025-10-19 at 5.51.07 AM.png"> 
+        <figcaption> Correspondances from Correspondance Tool </figcaption></figure>
+
+    <figure> <img src="images/conc/conccorr.png"> <figcaption> Correspondances Plotted </figcaption> </figure>
+    <figure> <img src="images/conc/Screenshot 2025-10-19 at 5.50.27 AM.png"> <figcaption> Homography Matrix </figcaption></figure>
+    <figure> <img src="images/conc/shift.png"> <figcaption> Shift and Apply Perspective Transformation to Align. </figcaption> </figure>
+    <figure> <img src="images/conc/amask.png"> <figcaption> alpha mask. </figcaption> </figure>
+    <figure> <img src="images/conc/blended.png"> <figcaption> stitched and blended images. </figcaption>  </figure>
+    <figure> <img src="images/conc/blendedconcrete.png">  <figcaption> More refined Final Image </figcaption>  </figure>
+
+</div class="image-row"></div>
+
+
+<h4> Room Decor </h4>
+<div class="image-column">
+    <figure> <img src="images/hbd/c.png"> <figcaption> Left and Right Images of our Happy Birthday Wall. </figcaption></figure>
+
+    <figure> <img src="images/hbd/a.png"> 
+        <figcaption> Correspondances from Correspondance Tool </figcaption></figure>
+
+    <figure> <img src="images/hbd/e.png"> <figcaption> Correspondances Plotted </figcaption> </figure>
+    <figure> <img src="images/hbd/b.png"> <figcaption> Homography Matrix </figcaption></figure>
+
+    <figure> <img src="images/hbd/g.png"> <figcaption> Shift and Apply Perspective Transformation to Align. </figcaption> </figure>
+    <figure> <img src="images/hbd/i.png"> <figcaption> alpha mask. </figcaption> </figure>
+    <figure> <img src="images/hbd/h.png"> <figcaption> stitched and blended images. </figcaption>  </figure>
+    <figure> <img src="images/hbd/j.png">  <figcaption> More refined Final Image </figcaption>  </figure>
+
+</div class="image-row"></div>
+
+
+<h2> Part B: FEATURE MATCHING for AUTOSTITCHING </h2>
+
+
+<h3> B.1: Harris Corner Detection </h3>
+
+
+<h3> B.2: Feature Descriptor Extraction </h3>
+
+
+
+<h3> B.3: Feature Matching </h3>
+
+
+<h3> B.4: RANSAC for Robust Homography </h3>
 
 
 
