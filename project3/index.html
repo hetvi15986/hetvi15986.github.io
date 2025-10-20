@@ -234,7 +234,7 @@ My final canvas had to be size (8035, 5575) with offsets (-2926, -1141). </p>
 
 <figure>
         <img src="images/blenddoe.png" >
-        <figcaption> Blended Doe </figcaption>
+        <figcaption> Stitched Doe </figcaption>
 </figure>
 
 <p> Looking closely, the middle of the image is blurry. However, this is expected, and the overall image looks like a proper stitch. </p>
@@ -331,33 +331,47 @@ My final canvas had to be size (8035, 5575) with offsets (-2926, -1141). </p>
 
 
 <h3> B.3: Feature Matching </h3>
-    <p> Some matches features. I had to increase the threshold in order to get a larger quantity of good points.  </p>
-<p> I calculated the distance between each of the bias/gain-normalized features.
+
+<p> Here, I didn't have to change thresholds from the paper to get good points. I calculated the distance between each of the bias/gain-normalized features.
     I also used Lowe's trick by only keeping a matching pair if the ratio of the nearest/second-nearest Euclidean distance is less than the threshold (~0.8). </p>
-
+<p> Here are ten patches that lined up between the left and right: </p>
 <div class="image-column">
-    <figure> <img src="images/B/9a4464c0-29ce-476e-b924-393f6d54f54f.png"> </figure>
-    <figure> <img src="images/B/42af2442-896a-4dad-9ce1-fa5112a2ac31.png"> </figure>
+    <figure> <img src="images/ae5a5155-d5fa-47c5-8596-1d78c5ed0ac7.png"> </figure>
+    <!-- <figure> <img src="images/B/42af2442-896a-4dad-9ce1-fa5112a2ac31.png"> </figure>
     <figure> <img src="images/B/955188f7-2493-440c-9736-2d0abc1ef027.png"> </figure>
-    <figure> <img src="images/B/e8f8f0b1-1589-4dca-8d9f-93a90f52aeab.png"> </figure>
-
-
+    <figure> <img src="images/B/e8f8f0b1-1589-4dca-8d9f-93a90f52aeab.png"> </figure> -->
 
 </div class="image-column"></div>
+<p> The feature decriptors are pretty good. There are 91 matches. So, I went to see the plot of the corresponding points.</p>
+    <figure> <img src=images/6d15b9d9-2556-4b2b-a451-062d9bcb706a.png> </figure>
+    <figure> <img src=images/d.png> </figure>
+<p> Clearly, these are some bad match-ups. But, with RANSAC, I only need four good points to be able to recover the homography. </p>
 
 
 <h3> B.4: RANSAC for Robust Homography </h3>
 
+<p> I ran RANSAC. The final homography using the 4 final inliers using the RANSAC algorithm: </p>
+<figure> <img src = "images/recoveredH.png" > <caption> H from RANSAC Points </caption></figure>
+<figure> <img src = "images/HMatrix.png" > <caption> H from Manually Selected Points  </caption></figure>
+
+<p> This is pretty similar to the homogrpahy I had recovered manually. As a note, I scaled down this image. It was too large (~8000 pixels), and it was crashing my computer. However, the process would have worked the same way, maybe with different hypertuning. </p>
+<p> As a result, the resulting stitched images are also very similar </p>
+
+<figure> <img src = "images/64db33d8-e9fa-48fa-ad1c-5cfe0d3be8fd.png" > <caption> Auto Stitch </caption></figure>
+<figure> <img src = "images/blenddoe.png" > <caption> Manual Stitch </caption></figure>
+
+<p> The alphamasks were also similar, as expected. </p>
+<figure> <img src = "images/dd.png" > <caption> Auto Stitch Mask </caption></figure>
+<figure> <img src = "images/50170651-07da-4da8-ab4f-1ee18924f318.png" > <caption> Manual Stitch Mask </caption></figure>
+
+
+<h3> Living Room Decor </h3>
 
 
 
 
 
-
-
-
-
-
+<h3> Concrete Wall </h3>
 
 
 </body>
