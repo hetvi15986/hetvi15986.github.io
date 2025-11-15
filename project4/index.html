@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project 4</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        h1 {
+            color: #530f0f;
+            text-align: center;
+            
+        }
+        h2 {
+            color: #8e1600;
+            text-align: center;
+            margin-top: 20px;
+        }
+        h3 {
+            color: #804141;
+            margin: 20px 10px 10px 10px;
+            text-align: center;
+        }
+        h4 {
+            color: #664848;
+            margin: 20px 10px 10px 10px;
+        }
+        h5 {
+            color: #a26b6b;
+            margin: 20px 10px 10px 10px;
+        }
+        p {
+            margin: 20px 10px 10px 10px;
+        }
+        
+        img {
+            max-width: 600px;
+            height: auto;
+            margin: 20px 10px 10px 10px;
+
+        }
+
+        figure {
+            text-align: center; /* centers both image and caption */
+            margin: 20px 0;
+        }
+        figcaption {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+            color: #555;
+            margin-top: 5px;
+        }
+        .image-row {
+            display: flex;         
+            gap: 20px;             
+            flex-wrap: wrap;       
+            justify-content: center; 
+        }
+        .image-row figure {
+            margin: 0;
+            text-align: center;
+            flex: 0 1 400px;       
+        }
+        .image-row img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .image-column {
+            display: flex;
+            flex-direction: column; 
+            gap: 20px;      
+            align-items: center;
+        }
+
+        .image-column figure {
+            margin: 0;
+            text-align: center;
+        }
+
+        .image-column img {
+            max-width: 90%;  
+            height: auto;
+            display: block;
+        }
+
+    </style>
+</head>
+
+<body>
+<h1>Project 4: Neural Radiance Field!</h1>
+
+<h2> Part 0: Calibrating Your Camera and Capturing a 3D Scan </h2>
+
+
+
+
+<h2> Part 1: Fit a Neural Field to a 2D Image </h2>
+<p> GOAL:  To represent the 2D neural field <code>F: (u,v) → (r,g,b)</code> </p>
+<h3>Model Architecture and Hyperparameters</h3>
+
+<p> To represent the 2D neural field  <code>F: (u,v) → (r,g,b)</code>, I implemented a multilayer perceptron (MLP) with sinusoidal positional encoding.
+    The network takes normalized 2D pixel coordinates as input and predicts an RGB value in the range <code>[0, 1]</code>. </p>
+<p> I closely followed the architecture shown in the image below.  </p> <figure> <img src="part1/mlp_img-1.jpg"> </figure>
+<p><b>Positional Encoding.</b>   The input coordinate <code>(u, v)</code> is expanded using sinusoidal positional encoding with a maximum frequency level of <b>L = 10</b>. This produces a <b>42-dimensional</b> encoded vector: </p>
+<p style="margin-left:30px"> <code>[u, v, sin(2⁰πu), cos(2⁰πu), …, sin(2¹⁰πv), cos(2¹⁰πv)]</code> </p>
+<p> Keeping the original 2 input dimensions, plus <code>2 × L × 2 = 40</code> sinusoidal terms, gives a final input width of: <b>42 channels</b> after positional encoding. </p>
+
+<p><b>MLP Structure.</b>   The encoded 42-D vector is fed into a fully-connected network consisting of: </p>
+<ul style="margin-left:20px"> <li>Linear(42 → 256), ReLU</li> <li>Linear(256 → 256), ReLU</li> <li>Linear(256 → 256), ReLU</li> <li>Linear(256 → 3), Sigmoid</li> </ul>
+<p> This results in a 4-layer MLP with <b>256 hidden units</b> in each hidden layer.   The final sigmoid ensures that predicted RGB values lie in <code>[0, 1]</code>. </p>
+
+<p><b>Training Setup.</b></p>
+<ul style="margin-left:20px">
+    <li>Optimizer: Adam</li>
+    <li>Learning rate: 1e-2</li>
+    <li>Batch size: 10,000 px samples per iteration</li>
+    <li>Iterations: 1,000 </li>
+    <li>Loss: Mean Squared Error (MSE)</li>
+    <li>Metric: Peak Signal-to-Noise Ratio (PSNR)</li>
+</ul>
+
+<h4>Dataset Sampling</h4> <p> To train efficiently, we randomly sample a batch of pixels per iteration. Each batch contains the 2D coordinates and normalized RGB values for supervision. </p>
+
+<h4>Training Loop</h4> 
+<p>
+1. Forward pass: predict RGB from coordinates<br>
+2. Compute MSE loss between predicted and ground truth colors<br>
+3. Backpropagate and update model weights with Adam<br>
+4. Track PSNR metric and reconstructed images to track progress.
+</p>
+
+<h3> Fox Image </h3>
+<h4> Original Image </h4> <figure> <img src="part1/fox/fox.jpg"> </figure>
+<h4> Training Progression Across Iterations </h4>
+
+<div class="image-row">
+    <figure> <img src="part1/fox/progression.png"> </figure>
+    <figure> <img src="part1/fox/training_psnr.png"> </figure>
+</div class="image-row"></div>
+
+<h4> Tune and Compare Hyperparameters</h4>
+<p> These are the final results for 2 choices of max positional encoding frequency (L = 10 and L = 2) and 2 choices of hidden channel width (256 and 64), displayed as a 2D grid. </p>
+<p> Their corresponding PSNR Graphs are also reported across iterations, on the same graph. 
+    Keeping all other parameters the same, we can see the model does worse from our baseline (blue) when the max-freq paramater L is decreased significantly (see red and green lines), and worsened a little when only the hidden dimension is decreased (see orange line).</p>
+<div class="image-row">
+    <figure> <img src="part1/fox/compare_grid.png"> </figure>
+    <figure> <img src="part1/fox/compare_psnr.png"> </figure>
+</div class="image-row"></div>
+
+<h3> Sunflower Image </h3>
+
+<h4> Original Image (from my backyard) </h4> <figure> <img src="part1/sunflower/sunflower.png"> </figure>
+<h4> Training Progression Across Iterations </h4>
+<div class="image-row">
+    <figure> <img src="part1/sunflower/progression.png"> </figure>
+    <figure> <img src="part1/sunflower/training_psnr.png"> </figure>
+</div class="image-row"></div>
+
+<h4> Tune and Compare Hyperparameters</h4>
+<p> These are the final results for 2 choices of max positional encoding frequency (L = 10 and L = 2) and 2 choices of hidden channel width (256 and 64), displayed as a 2D grid. </p>
+<p> Their corresponding PSNR Graphs are also reported across iterations, on the same graph. 
+    Again, keeping all other parameters the same, we can see the model does worse from our baseline (blue) when the max-freq paramater L is decreased significantly (see red and green lines), and worsened a little when only the hidden dimension is decreased (see orange line).</p>
+<div class="image-row">
+    <figure> <img src="part1/sunflower/compare_grid.png"> </figure>
+    <figure> <img src="part1/sunflower/compare_psnr.png"> </figure>
+</div class="image-row"></div>
+
+
+
+
+
+
+
+
+
+
+<h2> Part 2: Fit a Neural Radiance Field from Multi-view Images </h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+
+</html>
+
