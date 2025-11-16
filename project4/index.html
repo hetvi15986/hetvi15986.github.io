@@ -92,6 +92,9 @@
     </style>
 </head>
 
+
+
+
 <body>
 <h1>Project 4: Neural Radiance Field!</h1>
 
@@ -101,12 +104,11 @@
                         <h3>0.3 Estimating Camera Pose</h3> <p> For each image, I detect the ArUco tag and solve the PnP problem with <code>cv2.solvePnP()</code>, inputting my camera's intrinsic matrix and distortion coefficients calculated in part 0.1. I get the world to camera (w2c) matrices, from which I can calculate the c2w matrices for each camera through matrix inversion.</p> <p> Deliverable: 2 screenshots of your cloud of cameras in Viser showing the camera frustums' poses and images. </p>
 
 <div class="image-row"> 
-<figure> <img src="part1/sunflower/sunflower.png">  </figure>
-</figure> <figure> <img src="part1/sunflower/sunflower.png"> </figure> 
+<figure> <img src="part1/im1.png">  </figure>
+<figure> <img src="part1/im2.png"> </figure> 
 </div class="image-row"></div>
 
                         <h3>0.4 Undistorting images and creating a dataset </h3> <h4>Undistorting Images</h4> <p> I removed lens distortions with <code>cv2.undistort()</code>, inputting each image, the camera's matrix, and distortion coefficients. I did some cropping to the region of interest, to remove invalid pixels as a result of this correction.  In the end, I updated the principal points of the intrinsic matrix that will be used in the dataset for NeRF. </p> <h4>Saving the Dataset</h4> <p>Once all of the images are undistorted, I saved the images, their corresponding camera poses (extrinsics) in a .npzalong with camera poses in a <code>.npz</code> format for NeRF. Through intrisic matrix K isn't explicitly passed through, it can just be recalculated assuming fx ~ fy </p> <p> Datasets in this format can now be loaded in for Part 2, and used to train/validate/test NeRF for both the Lego truck and my own object.</p>
-
 
 
 
