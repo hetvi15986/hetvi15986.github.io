@@ -137,6 +137,43 @@
 
 <h2> Part 2: Fit a Neural Radiance Field from Multi-view Images </h3>
 
+<h3>Part 2.1: Create Rays from Cameras</h3>
+                    <h4> Camera to World </h4> <p> I need ways to go between the world, camera, and image ('pixel') coordinates in order to implement NeRF. </p> <p> The world to camera transform can be defined using a 3x3 rotation matrix R and a 3-dim translation vector t, formatted to create the 4x4 w2c matrix.  The camera to world c2w matrix is just the inverse of this matrix. So, we can find c2w using the provided w2c. </p> <p> Implementing a function <code>x_w = transform(c2w, x_c)</code> to go from camera to world required first making the 3D x_c coord into a 4D homogenous coordinate, to support matrix multiplication with a 4x4 c2w matrix. This matrix multiplication was done with batch matrix multiply in PyTorch, to support transformation of several batches of samples in training. Then, the coordinates are normalized and then unhomogenized back to be 3D. </p> <p> My implementation passed the <code>x == transform(c2w.inv(), transform(c2w, x)) </code> check </p>
+                    <h4> Pixel to Camera </h4> <p> Given an intrisic matrix K, pixel location uv, and depth s, I implemented a function that calculates the camera coordinates, such that <code> x_c = pixel_to_camera(K, uv, s) </code>. This is done by matrix multiplying the inverse of K with the homogenous coordinates of uv, resulting in the three-dimensional camera coordinates. This function also supports batched coordinates. </p>
+                    <h4> Pixel to Ray </h4> <p> Lastly, I implemented <code> ray_o, ray_d = pixel_to_ray(K, c2w, uv)</code>. Each ray is defined by its origin <code>ray_o</code> and its direction <code>ray_d</code>. Here, our origin is the camera location in world coordinates (<code>tvec</code>), which is how much the camera is shifted from the world origin we chose. The ray's direction is calculating a point along the depth  <code>s = 1</code> surface, and converting it to world coords, and normalizing. </p> <p> In code, I first take the input 2D pixel location and using the intrinsivs, find its 3D direction inside the camera. Then, I go from this camera space to the world space using the <code> transform </code> function. The ray's origin is just the translational vector in c2w, and the ray's direction is found by subtracting the point's camera coordinate by the origin, and normalizing. </p>
+
+
+
+<h3>Part 2.2: Sampling</h3> <p> In Part 1, we sampled pixels from one image to get colors and coordinates. When working with several images in NeRF, we have several cameras (different extrinsic matrices) to work with as well. With these, we want to convert pixel coordinates into rays in 3D space, so that we can sample from them. After obtaining the rays, we want to be able to sample points from these rays, so we can pass them into our network to ensure it has a diverse dataset to train on. </p> 
+                    <h4>Sampling Rays from Images</h4> <p> To sample images from rays, I use the <strong>RaysData</strong> class to be consistent and organized. It tracks the pixel coordinates, camera instrisics, c2w matrices, and flattened rays of each image, which is then used for sampling. When sampling N rays from the image, using <code> RaysData_dataset.sample_rays(N) </code>, I get every pixel location and its corresponding ray origin and direcction. This also supports batches, as are later used in training. </p>
+                    <h4>Sampling Points Along Rays </h4> <p> To discretize rays into 3D points, I uniformaly create points in each ray's <code> [near, far]</code> range, adding small random perturbation during training to avoid overfitting. </p><p>This ensures that every iteration of training shows the network a diverse collection of points from the data, allowing it to best learn the scene more robustly.</p>
+
+
+<h3>Part 2.3: Putting the Dataloading All Together</h3>  <p> To verify implementations have thus far been correct, I visualized the Lego dataset's cameras, rays, and sampled pixel points in 3D.</p>
+                    <div class="image-row"> 
+                        <figure> <img src="part2.3/cams.png"> </figure> <caption> Cameras </caption>
+                        <figure> <img src="part2.3/camsrays.png"> </figure> <caption> Cameras and Rays </caption>
+                        <figure> <img src= "part2.3/camsrayssamps.png"></figure> <caption> Cameras, Rays, and Sampled Points </caption>
+                    </div class="image-row"></div>
+                    <div class="image-row"> 
+                        <figure> <img src="part2.3/val_im.png"> </figure> <caption> Original Image </caption>
+                        <figure> <img src= "part2.3/topleft.png"></figure> <caption> Rays from only the Top Left Corner of the Image</caption>
+                    </div class="image-row"></div>
+
+
+<h3>Part 2.4: Neural Radiance Field</h3>  <p> Now, I implemented a NeRF MLP that takes in 3D world coordinates and view directions (both positionally encodeded), and predicts the <strong>density</strong> and <strong>color</strong> of each 3D point. </p>
+            <h4> Network Structure and Details </h4>
+                            <ul>
+                                <li>Initial layers process the positional encoding of 3D coordinates.</li>
+                                <li>A <strong>skip connection</strong> injects the original positional encoding into the middle of the network, so as to remind the network of the original input.  This also helps allow making the MLP deeper. </li>
+                                <li> The network splits into two branches after 8 fully connected layers, since density should not be affected by the ray direction.
+                                    <ul>
+                                        <li><strong>Density branch:</strong> Outputs positive density values using ReLU.</li>
+                                        <li><strong>Color branch:</strong> Concatenates intermediate features with the encoded ray direction, uses a small MLP, then predicts RGB values using Sigmoid (range 0–1).</li>
+                                    </ul>
+                                </li>
+                                <li> When positionally encoding, I used a higher max frequency of 10 for coordinates to capture finer details, and a lower frequency oof 4 on viewing direction. </li>
+                            </ul>
 
 
 
@@ -153,8 +190,7 @@
 
 
 
-
-
+                            
 </body>
 
 
