@@ -162,6 +162,9 @@
                         <figure> <img src="part2.3/val_im.png"> </figure> <caption> Original Image </caption>
                         <figure> <img src= "part2.3/topleft.png"></figure> <caption> Rays from only the Top Left Corner of the Image</caption>
                     </div class="image-row"></div>
+                    <div class="image-row"> 
+                        <figure> <img src="part2.5/near0.4far0.7.png"> </figure> <caption> Own Image Near 0.4, Far 0.7 Visual </caption> </caption>
+                    </div class="image-row"></div>
 
 
 <h3>Part 2.4: Neural Radiance Field</h3>  <p> Now, I implemented a NeRF MLP that takes in 3D world coordinates and view directions (both positionally encodeded), and predicts the <strong>density</strong> and <strong>color</strong> of each 3D point. </p>
@@ -197,19 +200,24 @@
 
 
 
+<h3>Part 2.6: Training with your own data </h3>
+ <p> Now, I ran my training loop on my own data. I tested to make sure my data was correctly input in Part 0, and it was. It was a matter of tuning parameters without exceeding Colab limits from there.</p>
+
+<h4> Progression Across Iteration and Loss and PSNR Graphs </h4>
+                    <figure> <img src="mug1/rendering_progression.png"> </figure> <caption> Loss and PSNR Graphs </caption>
+                    <p> You can begin to see the ArUco Tags, and the red comes from the redness of the mug. </p>
+                    <figure> <img src="mug1/training_curves.png"> </figure> <caption> Loss and PSNR Graphs </caption>
+<h4> Final Training GIF Rendering </h4> <figure> <img src="final2.5/lego_spherical.gif"> </figure> 
+<h4> Parameters </h4> 
+<p> Red was always prominent, even in my poorly tuned models. A lot of parameters had to be tuned to get even a good rendering.</p>
+<p> Near and Far parameters had to be tuned, since the camera positioning was very different from the Lego Data set. </p>
+<p> I didn't change the positional encoding parameters. </p>
+<p> I changed learning rate to be much much slower. </p>
+<p> I started with small n_samples = 32 to see if the training loop looked like it was going to be successful. But I otherwise used n_samples = 64</p>
+<p> Final: learning_rate=5e-4, iters=2000, batch_size=10000, render_every=500, n_samples = 64, near = 2.0, far = 6.0   </p>
 
 
-
-
-
-
-
-
-
-
-
-
-
+<figure> <img src="mug1/mug1g.gif"> </figure>
 
 
 
