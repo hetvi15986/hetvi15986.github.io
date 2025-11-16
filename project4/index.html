@@ -164,6 +164,7 @@
 <h3>Part 2.4: Neural Radiance Field</h3>  <p> Now, I implemented a NeRF MLP that takes in 3D world coordinates and view directions (both positionally encodeded), and predicts the <strong>density</strong> and <strong>color</strong> of each 3D point. </p>
             <h4> Network Structure and Details </h4>
                             <ul>
+                                <li>Closely followed this image. </li> <figure> <img src="final2.5/mlp_nerf.png"> </figure>
                                 <li>Initial layers process the positional encoding of 3D coordinates.</li>
                                 <li>A <strong>skip connection</strong> injects the original positional encoding into the middle of the network, so as to remind the network of the original input.  This also helps allow making the MLP deeper. </li>
                                 <li> The network splits into two branches after 8 fully connected layers, since density should not be affected by the ray direction.
@@ -177,6 +178,19 @@
 
 
 
+<h3>Part 2.5: Volume Rendering </h3> <p> Volume rendering can be done through an approximation, where the final color of the ray is the sum of the color, transmittance, and probability of a ray terminating at each sample i. First, I calculated the alpha values through 1 - exp(-sigmas * step_size). Then, I calculated the total transmittance along that ray with <code>torch.cumprod</code>, as well as the weights for each sample as transimttance * alpha. Finally, I computed the final pixel color as the weighted sum of the weights and the rgbs. This implementation is checked by the given code snipper, since <code> assert torch.allclose(rendered_colors, correct, rtol=1e-4, atol=1e-4) </code> passed. </p>
+
+<h3> Lego Dataset </h4> <p> To put everything together, I implemented a training loop that would render intermediate 10 validation images and record their PSNR values, as well as training loss/PSNR. Here are the results for the Lego Data set. </p>
+
+
+<h4> Progression Across Iteration and Loss and PSNR Graphs </h4>
+                    <div class="image-col"> 
+                        <figure> <img src="final2.5/graphs.png"> </figure> <caption> Loss and PSNR Graphs </caption>
+                        <figure> <img src="final2.5/val_ims.png"> </figure> <caption> Progression Across Iteration </caption>
+                    </div class="image-col"></div>
+
+<h4> Final Training GIF Rendering </h4> <figure> <img src="final2.5/lego_spherical.gif"> </figure> 
+<h4> Parameters </h4> <p> learning_rate=5e-4, iters=2000, batch_size=10000, render_every=500, n_samples = 64, near = 2.0, far = 6.0   </p>
 
 
 
@@ -190,7 +204,15 @@
 
 
 
-                            
+
+
+
+
+
+
+
+
+
 </body>
 
 
