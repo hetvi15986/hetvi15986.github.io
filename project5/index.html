@@ -113,23 +113,24 @@
 
             <h3> Model Outputs: <code>num_inference_steps = 20</code> </h3>
                 <p>  Random seed used: <code> seed_everything(100) </code> </p>
-                <img-row> <figure> <img src = "p5pt0/seed100/download.png">  <figcaption> Prompt: a sunflower wearing sunglasses </figcaption> </figure>
-                        <figure> <img src = "p5pt0/seed100/download-1.png">  <figcaption> Prompt: a beach with an umbrella </figcaption> </figure>
-                        <figure> <img src = "p5pt0/seed100/download-2.png">  <figcaption> Prompt: a volleyball team playing basketball </figcaption> </figure> 
-                </img-row>
+                <div class="image-row"> <figure> <img src = "p5pt0/seed100/download.png">  <figcaption> Prompt: a sunflower wearing sunglasses </figcaption> </figure>
+                                        <figure> <img src = "p5pt0/seed100/download-1.png">  <figcaption> Prompt: a beach with an umbrella </figcaption> </figure>
+                                        <figure> <img src = "p5pt0/seed100/download-2.png">  <figcaption> Prompt: a volleyball team playing basketball </figcaption> </figure>  </div>
 
             <h3> Model Outputs: <code>num_inference_steps = 60</code> </h3>
                 <p>  Random seed used: <code> seed_everything(100) </code> </p>
-                <img-row> <figure> <img src = "p5pt0/seed100/stepsize 60/download.png">  <figcaption> Prompt: a sunflower wearing sunglasses </figcaption> </figure>
-                        <figure> <img src = "p5pt0/seed100/stepsize 60/download-1.png">  <figcaption> Prompt: a beach with an umbrella </figcaption> </figure>
-                        <figure> <img src = "p5pt0/seed100/stepsize 60/download-2.png">  <figcaption> Prompt: a volleyball team playing basketball </figcaption> </figure> 
-                </img-row>
+                <div class="image-row"> <figure> <img src = "p5pt0/seed100/stepsize 60/download.png">  <figcaption> Prompt: a sunflower wearing sunglasses </figcaption> </figure>
+                                        <figure> <img src = "p5pt0/seed100/stepsize 60/download-1.png">  <figcaption> Prompt: a beach with an umbrella </figcaption> </figure>
+                                       <figure> <img src = "p5pt0/seed100/stepsize 60/download-2.png">  <figcaption> Prompt: a volleyball team playing basketball </figcaption> </figure>  </img-row>
 
             <h3> Reflection </h3>
                 <p> The "a sunflower wearing glasses" prompt at low <code> num_inference_steps </code> doesn't capture the image well. It often fails to generate the sunglasses, but is able to capture the sunfloweriness of the sunflower just fine. At higher <code>num_inference_steps</code>, however, it is able to do create the sunflower wearing sunglasses, and at a higher quality. </p>
                 <p> The "a beach with an umbrella" prompt seems to do well with both higher and lower <code> num_inference_steps </code>. In both images, we are able to make out the beach through the presence of sand and water at the horizon, and a umbrella. Interestingly, both images resemble digitally drawn backdrops. Both are relatively high quality, and retrieve what the prompt is trying to achieve. </p>
                 <p> The "a volleyball team playing basketball" prompt does worse than the other two, but is still passable as a realistic image if not observed closely. With a lower <code> num_inference_steps </code>, we see that the humans are more unnaturally placed, and there is no basketball to be seen, but there is an absense of a volleyball net and the girls don't really seem like they're playing volleyball, but are wearing volleyball uniforms. But with a higher <code> num_inference_steps </code>, we see a very low net, a basketball, and girls in volleyball attire/poses, but they don't seem to be playing basketball. Both images seem natural and seem to conform to the given prompt at a glance, but don't correspond to the prompt the same way the other prompts do. </p>
 
+
+<h2>Part 1: Sampling Loops</h2>
+    <h3>1.1 Implementing the Forward Process</h3>
 
 
 
