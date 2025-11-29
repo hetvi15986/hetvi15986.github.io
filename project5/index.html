@@ -133,18 +133,43 @@
 
 <h2>Part 1: Sampling Loops</h2>
     <h3>1.1 Implementing the Forward Process</h3>
-        <p>helo </p>
-                <div class="image-row"> <figure> <img src = "p5 pt1/pt1.4/original.png">  <figcaption> Original (scaled) Berkeley Campanile </figcaption> </figure>
-                                        <figure> <img src = "p5 pt1/pt1.1/camp250.png">  <figcaption> Noisy Campanile at t=250 </figcaption> </figure>
-                                        <figure> <img src = "p5 pt1/pt1.1/camp500.png">  <figcaption> Noisy Campanile at t=500 </figcaption> </figure>
-                                        <figure> <img src = "p5 pt1/pt1.1/camp750.png">  <figcaption> Noisy Campanile at t=750 </figcaption> </figure>  </div>
+            <h4> Goal: Implement <code> noisy_im = forward(im, t) </code> </h4>
+                <p> This <code>forward</code> function implements a one forward diffusion step in a diffusion model, as it's useful in simulating progressively adding noise to a clean image over time. It takes a clean image tensor <code>im</code> of shape <code>(1, 3, 64, 64)</code> and a timestep <code>t</code>, then returns a noisy version of the clean image at that timestep. </p>
+                <figure> <img src = "p5 pt1/pt1.1/formula.png" > </figure>
+                <p> First, we sample <code>epsilon</code> from Gaussian N(0,1) noise (same shape as the image). Then, we get cumulative products of diffusion alphas at timestep <code>t</code>, <code>alpha_bar_t</code>, to determine how much of the original image should by incorporated. The clean image is scaled by <code>sqrt(alpha_bar_t)</code> and the noise is scaled by <code>sqrt(1 - alpha_bar_t)</code>, and their sum produces a noisy image <code>im_noisy</code>. </p>
+            <h4> Implementation </h4> <figure> <img src = "p5 pt1/pt1.1/imp.png" > </figure>
+
+            <h4> Campanile at Noise Levels <code>t = 250, 500, 750 </code> </h4>
+                        <div class="image-row"> <figure> <img src = "p5 pt1/pt1.4/original.png">  <figcaption> Original (scaled) Berkeley Campanile </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/pt1.1/camp250.png">  <figcaption> Noisy Campanile at t=250 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/pt1.1/camp500.png">  <figcaption> Noisy Campanile at t=500 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/pt1.1/camp750.png">  <figcaption> Noisy Campanile at t=750 </figcaption> </figure>  </div>
 
 
+    
+    <h3>1.2 Classical Denoising</h3>
+            <h4> Goal: Gaussian blur filtering to try to remove the noise using <code>torchvision.transforms.functional.gaussian_blur</code> with <code>kkernel_size = [7, 7]</code> and <code> sigma = 1</code>. </h4>
+                        <div class="image-row"> <figure> <img src = "p5 pt1/pt1.1/camp250.png">  <figcaption> Noisy Campanile at t=250 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/pt1.1/camp500.png">  <figcaption> Noisy Campanile at t=500 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/pt1.1/camp750.png">  <figcaption> Noisy Campanile at t=750 </figcaption> </figure>  </div>
+                        <div class="image-row"> <figure> <img src = "p5 pt1/1.2/kernelsize5/download.png">  <figcaption> Gaussian Blur Denoising at t=250 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/1.2/kernelsize7/download-1.png">  <figcaption> Gaussian Blur Denoising at t=500 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/1.2/kernelsize7/download-2.png">  <figcaption> Gaussian Blur Denoising at t=750 </figcaption> </figure>  </div>
 
+    <h3>1.3 One-Step Denoising</h3>
+    <p> Here, we aim to denoise using our model. First, we run the forward process on the image at the given timestep <code>t</code>, and then predict the noise using the pretrained denoiser. Now, we can generate the clean estimate by solving for <code>x_0</code> from the equation in Part 1.1. </p>
+            <h4> Goal: Denoise Using the Denoiser in one step. </h4>
+                        <div class="image-row"> <figure> <img src = "p5 pt1/pt1.1/camp250.png">  <figcaption> Noisy Campanile at t=250 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/pt1.1/camp500.png">  <figcaption> Noisy Campanile at t=500 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/pt1.1/camp750.png">  <figcaption> Noisy Campanile at t=750 </figcaption> </figure>  </div>
+                        <div class="image-row"> <figure> <img src = "p5 pt1/1.3/y250/download-1.png">  <figcaption> Model Noise Estimate at t=250 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/1.3/y500/download-1.png">  <figcaption> Model Noise Estimate at t=500 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/1.3/y750/download-1.png">  <figcaption> Model Noise Estimate at t=750 </figcaption> </figure>  </div>     
+                        <div class="image-row"> <figure> <img src = "p5 pt1/1.3/y250/download copy.png">    <figcaption> One-Step Denoised Campanile at t=250 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/1.3/y500/download-2.png">  <figcaption> One-Step Denoised Campanile at t=500 </figcaption> </figure>
+                                                <figure> <img src = "p5 pt1/1.3/y750/download-2.png">  <figcaption> One-Step Denoised Campanile at t=750 </figcaption> </figure>  </div>                        
 
-
-
-
+    <h3>1.4 Iterative Denoising </h3>
 
 
 
