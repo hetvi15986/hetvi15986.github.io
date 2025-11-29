@@ -157,7 +157,7 @@
                                                 <figure> <img src = "p5 pt1/1.2/kernelsize7/download-2.png">  <figcaption> Gaussian Blur Denoising at t=750 </figcaption> </figure>  </div>
 
     <h3>1.3 One-Step Denoising</h3>
-    <p> Here, we aim to denoise using our model. First, we run the forward process on the image at the given timestep <code>t</code>, and then predict the noise using the pretrained denoiser. Now, we can generate the clean estimate by solving for <code>x_0</code> from the equation in Part 1.1. </p>
+            <p> Here, we aim to denoise using our model. First, we run the forward process on the image at the given timestep <code>t</code>, and then predict the noise using the pretrained denoiser. Now, we can generate the clean estimate by solving for <code>x_0</code> from the equation in Part 1.1. </p>
             <h4> Goal: Denoise Using the Denoiser in one step. </h4>
                         <div class="image-row"> <figure> <img src = "p5 pt1/pt1.1/camp250.png">  <figcaption> Noisy Campanile at t=250 </figcaption> </figure>
                                                 <figure> <img src = "p5 pt1/pt1.1/camp500.png">  <figcaption> Noisy Campanile at t=500 </figcaption> </figure>
@@ -170,7 +170,32 @@
                                                 <figure> <img src = "p5 pt1/1.3/y750/download-2.png">  <figcaption> One-Step Denoised Campanile at t=750 </figcaption> </figure>  </div>                        
 
     <h3>1.4 Iterative Denoising </h3>
+            <p> Instead of taking one step towards the clean estimate, we can take multiple steps toward the clean estimate of the given noisy image in iterative denoising. </p>
+            <p> Essentially, we are trying to implement this function: </p>
+            <h4>Create <code>strided_timesteps</code>: a list of monotonically decreasing timesteps, starting at 990, with a stride of 30, eventually reaching 0. </h4>                 <figure> <img src = "p5 pt1/pt1.4/strides.png" > </figure>
+            <h4> Also initialize the timesteps using <code></code>stage_1.scheduler.set_timesteps(timesteps=strided_timesteps)</code> </h4>
+            <h4>Complete the <code>iterative_denoise</code> function:</h4>         <p> Essentially, we are trying to implement this equation: </p>    <figure class="side-by-side">  <img src="p5 pt1/pt1.4/formula.png" style="height:100;" > <figcaption> • <code>x_t</code> is your image at timestep <code>t</code> <br> 
+                                                                                                                                                                                             • <code>x_t'</code> (<code>t < t'</code>) is your noisy image at timestep <code>t'</code> (a less noisy image) <br>
+                                                                                                                                                                                             • <code>alpha_bar_t</code> helps determine how much of the clean image we want to retain at time <code>t</code>
+                                                                                                                                                                                             • <code>alpha_t</code> =  <code>alpha_bar_t</code> / <code>alpha_bar_t'</code> <br>
+                                                                                                                                                                                             • <code>beta_t</code> =  <code>1 - alpha_t</code> <br>
+                                                                                                                                                                                             • <code> x_0 </code> is our current estimate of the clean image <br>
+                                                                                                                                                                                             • <code> v_sigma </code> is random noise predicted by DeepFloyd. </figcaption> </figure>
+            <h4> Implementation </h4>                 <figure> <img src = "p5 pt1/pt1.4/imp.png" > </figure>
 
+
+            <h4> Show the noisy Campanile every 5th loop of denoising (gradually becomes less noisy). </h4>
+                            <div class="image-row">         <figure> <img src = "p5 pt1/pt1.4/t690.png">    <figcaption> Iterative Denoising, Noisy Campanile at t = 690 </figcaption> </figure>
+                                                            <figure> <img src = "p5 pt1/pt1.4/t540.png">    <figcaption> Iterative Denoising, Noisy Campanile at t = 540 </figcaption> </figure>
+                                                            <figure> <img src = "p5 pt1/pt1.4/t390.png">    <figcaption> Iterative Denoising, Noisy Campanile at t = 390 </figcaption> </figure>
+                                                            <figure> <img src = "p5 pt1/pt1.4/t240.png">    <figcaption> Iterative Denoising, Noisy Campanile at t = 240 </figcaption> </figure>
+                                                            <figure> <img src = "p5 pt1/pt1.4/t90.png">    <figcaption> Iterative Denoising, Noisy Campanile at t = 90 </figcaption> </figure> </div>
+            
+            <h4> Cross-Denoising-Method Comparisons </h4>
+                            <div class="image-row">         <figure> <img src = "p5 pt1/pt1.4/original.png">    <figcaption> Original (scaled) Campanile </figcaption> </figure>
+                                                            <figure> <img src = "p5 pt1/pt1.4/iterativedenoising.png">    <figcaption> Iterative Denoising: final clean image prediction  </figcaption> </figure>
+                                                            <figure> <img src = "p5 pt1/pt1.4/onestep.png">    <figcaption> One Step Denoising: predicted clean image using a single denoising step (looks worse than iterative denoising)</figcaption> </figure>
+                                                            <figure> <img src = "p5 pt1/pt1.4/guassianblur.png">    <figcaption> Gaussian-Filter Denoising: predicted clean image using gaussian blurring </figcaption> </figure>  </div>
 
 
 
