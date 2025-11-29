@@ -336,6 +336,34 @@
 
 
 <h3> 1.8 Visual Anagrams </h3>
+<p> Visual Anagrams are optical illusions where an image reveals different scenes depending on its orientation. </p>
+
+    <h4>Method</h4>
+                <ol>
+                    <li> First, denoise an image <code>x</code> at timestep <code>t</code> with prompt <code>prompt1</code> to get noise estimate <code>epsilon1</code>.</li>
+                    <li> Then, flip <code>x</code> (if we want 180 degree illusions) and denoise with <code>prompt2</code> to get noise estimate <code>epsilon2</code>.</li>
+                    <li> Next, flip the image back and average the two noise estimates:</li> <pre><code>epsilon = (epsilon1 + flip(epsilon2)) / 2</code></pre>
+                    <li> Lastly, denoise using Perform a denoising step <code>epsilon</code> to update the image, as done before.</li>
+                </ol>
+    <h4> Implementation</h4> <p> This is how I changed the main body of <code>make_flip_illusion</code> . </p> <figure> <img src = "p5 pt1/pt1.8/imp.png" > </figure>   
+    <h4> "a beach" and "a tulip field" </h4>       <div class="image-row"> <figure> <img src = "p5 pt1/pt1.8/beachtulip/1.png">  <figcaption> Beach </figcaption>  </figure> 
+                                                                           <figure> <img src = "p5 pt1/pt1.8/beachtulip/2.png"> <figcaption> Tulip Field (Flipped) </figcaption>    </figure> </div>
+    <h4> "a happy family" and "a bouquet" </h4>       <div class="image-row"> <figure> <img src = "p5 pt1/pt1.8/fambouqet/1.png">  <figcaption> Happy Family </figcaption>  </figure> 
+                                                                           <figure> <img src = "p5 pt1/pt1.8/fambouqet/2.png"> <figcaption> Bouquet (Flipped) </figcaption>    </figure> </div>
+    <h4>  "an oil painting of an old man" and "an oil painting of people around a campfire" </h4>       <div class="image-row"> <figure> <img src = "p5 pt1/pt1.8/manfire/1.png">  <figcaption>  "an oil painting of an old man" </figcaption>  </figure> 
+                                                                           <figure> <img src = "p5 pt1/pt1.8/manfire/2.png"> <figcaption> "an oil painting of people around a campfire" (Flipped) </figcaption>    </figure> </div>
+    <h4>  "a puppy" and "a raven" </h4>       <div class="image-row"> <figure> <img src = "p5 pt1/pt1.8/1.png">  <figcaption>  "a puppy" </figcaption>  </figure> 
+                                                                           <figure> <img src="p5 pt1/pt1.8/2.png" style="transform: rotate(180deg); "> <figcaption> "a raven" (Flipped) </figcaption>    </figure> </div>
+    
+
+
+<h3> 1.9 Hybrid Images </h3>
+
+
+
+
+
+
 
 
 
