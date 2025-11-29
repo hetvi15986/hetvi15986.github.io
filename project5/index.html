@@ -200,9 +200,84 @@
 
 
 
+    <h3>1.5 Diffusion Model Sampling </h3> <p> By using the <code> iterative_denoise </code> function and starting at <code>im_noise</code> = a random noisy image of desired shape, <code> i_start = 0</code>, <code> prompt_embeds = prompt_embeds_dict["a high quality photo"]</code>, and <code>timesteps=strided_timesteps</code>, we can generate images from scratch. </p>
+                                <h4> Sampled Images: </h4>
+                                <div class="image-row">     <figure> <img src = "p5 pt1/pt 1.5/download-5.png">    </figure>
+                                                            <figure> <img src = "p5 pt1/pt 1.5/download.png">     </figure>
+                                                            <figure> <img src = "p5 pt1/pt 1.5/download-6.png">     </figure>
+                                                            <figure> <img src = "p5 pt1/pt 1.5/download-9.png">   </figure> 
+                                                            <figure> <img src = "p5 pt1/pt 1.5/download-13.png">   </figure> </div>
 
 
+    <h3>1.6 Classifier-Free Guidance (CFG)</h3>  <p> The images sampled in 1.5 aren't always the best. But using CFG, we can improve image quality by combining conditional and unconditional noise estimates in the diffusion process. The strength of guidance is controlled by scale, which determines <code> epsilon = uncond_epsilon + scale * (cond_epsilon - uncond_epsilon) </code>.</p>
+            <h4> Goal: Implement <code>iterative_denoise_cfg</code>  </h4>  <figure> <img src = "p5 pt1/1.6/imp.png" > </figure>
+                <p> We can then generate better-quality pictures using  <code>iterative_denoise_cfg</code>  with <code>im_noise</code> = a random noisy image of desired shape,<code> i_start = 0</code>, <code> prompt_embeds = prompt_embeds_dict["a high quality photo"]</code>, <code>uncond_prompt_embeds = prompt_embeds_dict['']</code>, <code>timesteps=strided_timesteps</code>, and <code>scale = 7</code>.</p>
 
+            <h4> Images using <code>iterative_denoise_cfg</code> with <code> scale = 7 </code> = CFG scale = gamma. </h4>
+                                    <div class="image-row">     <figure> <img src = "p5 pt1/1.6/download-2.png">    </figure> 
+                                                                <figure> <img src = "p5 pt1/1.6/download-5.png">    </figure> 
+                                                                <figure> <img src = "p5 pt1/1.6/download copy.png">    </figure> 
+                                                                <figure> <img src = "p5 pt1/1.6/download-10.png">    </figure> 
+                                                                <figure> <img src = "p5 pt1/1.6/download-3 copy.png">    </figure> </div>
+
+
+    <h3> 1.7 Image-to-image Translation </h3>
+            <h4> SD Edit: Campanile </h4>
+                                    <div class="image-row">     <figure> <img src = "p5 pt1/p5 pt1.7/1.7/campanile/istart1.png">  <figcaption> SDEdit with <code>i_start = 1</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/campanile/istart3.png"> <figcaption> SDEdit with <code>i_start = 3</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/campanile/istart5.png">  <figcaption> SDEdit with <code>i_start = 5</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/campanile/istart7.png">  <figcaption> SDEdit with <code>i_start = 7</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/campanile/istart10.png"> <figcaption> SDEdit with <code>i_start = 10</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/campanile/istart20.png">   <figcaption> SDEdit with <code>i_start = 20</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/campanile/campanile.png"> <figcaption>  Original Campanile </figcaption>  </figure>  </div>
+
+            <h4> SD Edit: Mountains </h4>
+                                    <div class="image-row">     <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own3/istart1.png">  <figcaption> SDEdit with <code>i_start = 1</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own3/istart3.png"> <figcaption> SDEdit with <code>i_start = 3</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own3/istart5.png">  <figcaption> SDEdit with <code>i_start = 5</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own3/istart7.png">  <figcaption> SDEdit with <code>i_start = 7</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own3/istart10.png"> <figcaption> SDEdit with <code>i_start = 10</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own3/istart20.png">   <figcaption> SDEdit with <code>i_start = 20</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own3/download.png"> <figcaption>  Original  </figcaption>  </figure>  </div>
+
+                        
+            <h4> SD Edit: Man </h4>
+                                    <div class="image-row">     <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own2/1.png">  <figcaption> SDEdit with <code>i_start = 1</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own2/2.png"> <figcaption> SDEdit with <code>i_start = 3</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own2/3.png">  <figcaption> SDEdit with <code>i_start = 5</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own2/4.png">  <figcaption> SDEdit with <code>i_start = 7</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own2/5.png"> <figcaption> SDEdit with <code>i_start = 10</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own2/6.png">   <figcaption> SDEdit with <code>i_start = 20</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7/own2/download.png"> <figcaption>  Original  </figcaption>  </figure>  </div>
+<h3> 1.7.1 Editing Hand-Drawn and Web Images </h3>
+         <h4> One mage from the Web </h4>
+                                        <div class="image-row"> <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/web/1.png">  <figcaption> Flower with <code>i_start = 1</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/web/3.png"> <figcaption> Flower with <code>i_start = 3</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/web/5.png">  <figcaption> Flower with <code>i_start = 5</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/web/7.png">  <figcaption> Flower with <code>i_start = 7</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/web/10.png"> <figcaption> Flower with <code>i_start = 10</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/web/20.png">   <figcaption> Flower with <code>i_start = 20</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/web/download.png"> <figcaption>  Original  </figcaption>  </figure>  </div>
+
+        <h4> First hand-drawn image </h4>
+                                        <div class="image-row"> <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw1/1.png">  <figcaption> Room with <code>i_start = 1</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw1/2.png"> <figcaption> Room with <code>i_start = 3</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw1/3.png">  <figcaption> Room with <code>i_start = 5</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw1/4.png">  <figcaption> Room with <code>i_start = 7</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw1/5.png"> <figcaption> Room with <code>i_start = 10</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw1/6.png">   <figcaption> Room with <code>i_start = 20</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw1/download.png"> <figcaption>  Original  </figcaption>  </figure>  </div>
+
+         <h4> Second hand-drawn image </h4>
+                                        <div class="image-row"> <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw2/download-1.png">  <figcaption> Sunflower with <code>i_start = 1</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw2/download-2.png"> <figcaption> Sunflower with <code>i_start = 3</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw2/download-3.png">  <figcaption> Sunflower with <code>i_start = 5</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw2/download-4.png">  <figcaption> Sunflower with <code>i_start = 7</code></figcaption>   </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw2/download-5.png"> <figcaption> Sunflower with <code>i_start = 10</code></figcaption>    </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw2/download-6.png">   <figcaption> Sunflower with <code>i_start = 20</code></figcaption>  </figure> 
+                                                                <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw2/download.png"> <figcaption>  Original  </figcaption>  </figure>  </div>
+
+<h3> 1.7.2 Inpainting </h3>
 
 
 
