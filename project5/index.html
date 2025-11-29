@@ -108,19 +108,22 @@
 
 <h1>Project 5A: The Power of Diffusion Models</h1>
 <h2>Part 0: Set Up</h2>
-            <p>After gaining access to the DeepFloyd IF diffusion model through Hugging Face, I generated prompt embeddings using the provided Hugging Face clusters. Here are some of the prompts I embedded. </p> 
-            <figure> <img src= "p5pt0/pembs.png" style="height:100px;" > </figure>
+            <h3> Prompt Embeddings </h3>
+            <figure class="side-by-side">  <img src="p5pt0/pembs.png" style="height:400px;" > <figcaption>After gaining access to the DeepFloyd IF diffusion model through Hugging Face, I generated prompt embeddings using the provided Hugging Face clusters. Here are some of the prompts I embedded. </figcaption> </figure>
 
+            <h3> Model Outputs: <code>num_inference steps = 20</code> </h3>
+                <p>  Random seed used: <code> seed_everything(100) </code> </p>
+                <img-row> <figure> <img src = "p5pt0/seed100/download.png">  <figcaption> Prompt: a sunflower wearing sunglasses </figcaption> </figure>
+                        <figure> <img src = "p5pt0/seed100/download-1.png">  <figcaption> Prompt: a beach with an umbrella </figcaption> </figure>
+                        <figure> <img src = "p5pt0/seed100/download-2.png">  <figcaption> Prompt: a volleyball team playing basketball </figcaption> </figure> 
+                </img-row>
 
-
-
-
-<figure class="side-by-side">
-    <img src="p5pt0/pembs.png">
-    <figcaption>This caption will appear to the right.</figcaption>
-</figure>
-
-
+            <h3> Model Outputs: <code>num_inference steps = 60</code> </h3>
+                <p>  Random seed used: <code> seed_everything(100) </code> </p>
+                <img-row> <figure> <img src = "p5pt0/seed100/stepsize 60/download.png">  <figcaption> Prompt: a sunflower wearing sunglasses </figcaption> </figure>
+                        <figure> <img src = "p5pt0/seed100/stepsize 60/download-1.png">  <figcaption> Prompt: a beach with an umbrella </figcaption> </figure>
+                        <figure> <img src = "p5pt0/seed100/stepsize 60/download-2.png">  <figcaption> Prompt: a volleyball team playing basketball </figcaption> </figure> 
+                </img-row>
 
 
 
