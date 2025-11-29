@@ -343,9 +343,9 @@
                     <li> First, denoise an image <code>x</code> at timestep <code>t</code> with prompt <code>prompt1</code> to get noise estimate <code>epsilon1</code>.</li>
                     <li> Then, flip <code>x</code> (if we want 180 degree illusions) and denoise with <code>prompt2</code> to get noise estimate <code>epsilon2</code>.</li>
                     <li> Next, flip the image back and average the two noise estimates:</li> <pre><code>epsilon = (epsilon1 + flip(epsilon2)) / 2</code></pre>
-                    <li> Lastly, denoise using Perform a denoising step <code>epsilon</code> to update the image, as done before.</li>
+                    <li> Lastly, denoise using <code>epsilon</code> to update the image, as done before.</li>
                 </ol>
-    <h4> Implementation</h4> <p> This is how I changed the main body of <code>make_flip_illusion</code> . </p> <figure> <img src = "p5 pt1/pt1.8/imp.png" > </figure>   
+    <h4> Implement <code> make_flip_illusion </code> </h4> <p> This is how I changed the main body of <code>make_flip_illusion</code> . </p> <figure> <img src = "p5 pt1/pt1.8/imp.png" > </figure>   
     <h4> "a beach" and "a tulip field" </h4>       <div class="image-row"> <figure> <img src = "p5 pt1/pt1.8/beachtulip/1.png">  <figcaption> Beach </figcaption>  </figure> 
                                                                            <figure> <img src = "p5 pt1/pt1.8/beachtulip/2.png"> <figcaption> Tulip Field (Flipped) </figcaption>    </figure> </div>
     <h4> "a happy family" and "a bouquet" </h4>       <div class="image-row"> <figure> <img src = "p5 pt1/pt1.8/fambouqet/1.png">  <figcaption> Happy Family </figcaption>  </figure> 
@@ -357,8 +357,27 @@
     
 
 
-<h3> 1.9 Hybrid Images </h3>
+<h3> 1.9 Hybrid Images </h3> <p> We can also create hybrid images by combining features from two different prompts: Low-frequency details come from one prompt, and high-frequency details come from the other. </p>
 
+  <h4>Method</h4>
+    <ol>
+        <li>First, generate two noise estimates <code>epsilon1</code> and <code>epsilon2</code> using the two text prompts <code>prompt1</code> and <code>prompt2</code> with the UNet diffusion model.</li>
+        <li> Then, extract low frequencies from one noise estimate using a low-pass filter (<code>torchvision.transforms.functional.gaussian_blur</code>), and high frequencies from the other using a high-pass filter (<code>img - torchvision.transforms.functional.gaussian_blur</code>).</li>
+        <li> Use Gaussian blur with kernel size 33 and sigma 2. </li>
+        <li>Next, combine them to form the final noise estimate:</li> <pre><code>epsilon = low_pass(epsilon1) + high_pass(epsilon2)</code></pre>
+        <li>Lastly, , denoise using <code>epsilon</code> to update the image, as done before.</li>
+    </ol>
+
+    <h4> Implement <code> make_hybrids </code> </h4> <p> This is how I changed the main body of <code>make_hybrids</code> . </p> <figure> <img src = "p5 pt1/1.9/imp.png" > </figure>    
+
+    <h4> Cat (close) and Puppy (far) </h4> <div class="image-row">  <figure> <img src = "p5 pt1/1.9/catpuppy/1.png" > </figure>     </div>
+
+    <h4> Sunset (close) and Man (far) </h4> <div class="image-row"> <figure> <img src = "p5 pt1/1.9/man sunset/1.png" > </figure>    </div>
+    
+    <h4> Witch (close) and Tree (far) </h4> <div class="image-row"> <figure> <img src = "p5 pt1/1.9/witchtree/1.png" > </figure>    </div>
+
+
+    <h4> Waterfalls (close) and Skull (far) </h4> <div class="image-row"> <figure> <img src = "p5 pt1/1.9/skull/1.png" > </figure>    </div>
 
 
 
