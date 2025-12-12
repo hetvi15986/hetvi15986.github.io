@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -107,7 +107,7 @@
 
 
 
-
+<!-- 
 <h1>Project 5A: The Power of Diffusion Models</h1>
 <h2>Part 0: Set Up</h2>
             <h3> Prompt Embeddings </h3>
@@ -387,13 +387,59 @@
     <figure> <img src = "p5 pt1/1.9/skull/1.png" style="width: 30%;">  <figcaption> Skull</figcaption> </figure> 
    </div>
 
-
+ -->
 
 
 
 
 <h1>Project 5B: Flow Matching from Scratch</h1>
+    <h2>Part 1: Training a Single-Step Denoising UNet</h2> <h3> Goal: Denoise noisy image in one step, optimizing over L2 Loss</h3>
+    
+    <h2>1.1 Implementing the UNet </h2>
+        <p> I implemented a simpler version of the UNet architecture used in diffusion models. The UNet consists of an upsampling and downsampling structure with skip connections, allowing both local and global features to be captured. The model takes in a noisy image as input and attempts to denoise the image.</p>
+        <figure> <img src = "part B pt1/une.png" > </figure>
 
+    <h2> 1.2 Using the UNet to Train a Denoiser  </h2> <p> To train the denoiser, I need to generate noisy z and clean x image pairs. To create the noisy image from the clean, I need to add noise proportional to sigma to the clean image. I sampled from the MNIST dataset, obtained Gaussian noise <code>epsilon</code> using <code>torch.randn_like</code>, and create a noisy z = x + epsilon * sigma .  I made sure to clamp the resulting values between 0 and 1 for better visualization.</p>  <h3>Visualizing the noising process: </h3> <figure> <img src = "part B pt1/pt1.2.png" > </figure>
+    
+    <h2> 1.1.2.1 Training </h2>
+            <h3> Goal: Train a denoiser to denoisy noisy image <code>z</code> in one step, using L2 loss with <code> σ = 0.5 </code> applied to a clean image <code>x</code>. </h3>  <p> I trained the UNet model over a total of 5 epochs, using the AdamW optimizer to minimze L2 loss (MSE).</p> <p> Hyperparameters: </p> <ul> <li>batch_size = 256</li> <li>learning_rate = 1e-4</li> <li>noise_level = 0.5</li> <li>hidden_dim = 128</li> <li>num_epochs = 5</li> </ul>
+            <h3> Training Loss Curve </h3> <figure> <img src = "part B pt1/savedmodels/training_curve.png" >  <figcaption>Training Loss Curve: Low loss achieved </figcaption></figure> 
+            <h3> Sample results on the test set with noise level <code> σ = 0.5 </code> after the first and the fifth epoch </h3>
+            <h3> On Random Images</h3>
+                <div class="image-row">     <figure> <img src = "part B pt1/savedmodels/denoised_results_epoch_1.png" style="width:400px;">  <figcaption> Epoch 1 </figcaption>  </figure> 
+                                            <figure> <img src = "part B pt1/savedmodels/denoised_results_epoch_5.png" style="width:400px;">  <figcaption> Epoch 5 </figcaption>  </figure> </div>
+            
+            <h4> To better compare the same test images' results at each saved epoch of the model: </h4>
+                <div class="image-row">     <figure> <img src = "part B pt1/savedmodels/denoised_results_epoch_comparable_1.png" style="width:400px;">  <figcaption> Epoch 1 </figcaption>  </figure> 
+                                            <figure> <img src = "part B pt1/savedmodels/denoised_results_epoch_comparable_5.png" style="width:400px;">  <figcaption> Epoch 5 </figcaption>  </figure> </div>
+    <h2> 1.2.2 Out-of-Distribution Testing </h2>
+            <p> The denoiser I just trained was trained on images noised at noise level <code> σ = 0.5 </code>, and it doesn't generalize well when test images are noised at different noise levels (called 'out of distribution' test images). </p>
+            <h3> Sampled results on the test set with out-of-distribution noise levels: </h3>
+            <h4> Small noise levels: <code> σ = [0.0, 0.2] </code> </h4>
+                    <div class = "image-row">   <figure> <img src = "part B pt1/OODTesting/ood_sigma_0.0.png" style="width:300px;">  <figcaption> Noise Level 0.0 </figcaption>  </figure> 
+                                              <figure> <img src = "part B pt1/OODTesting/ood_sigma_0.2.png" style="width:300px;">  <figcaption> Noise Level 0.2 </figcaption>  </figure> </div>
+
+            <h4> Noise levels similar around <code>σ = 0.5 </code>:  <code> σ = [0.4, 0.5, 0.6] </code>  </h4>
+                    <div class = "image-row">   <figure> <img src = "part B pt1/OODTesting/ood_sigma_0.4.png" style="width:300px;">  <figcaption> Noise Level 0.4 </figcaption>  </figure> 
+                                              <figure> <img src = "part B pt1/OODTesting/ood_sigma_0.5.png" style="width:300px;">  <figcaption> Noise Level 0.5 </figcaption>  </figure> 
+                                              <figure> <img src = "part B pt1/OODTesting/ood_sigma_0.6.png" style="width:300px;">  <figcaption> Noise Level 0.6 </figcaption>  </figure></div>
+  
+            <h4> High noise levels:  <code> σ = [0.8, 1.0] </code>  </h4>
+                    <div class="image-row">   <figure> <img src = "part B pt1/OODTesting/ood_sigma_0.8.png" style="width:300px;">  <figcaption> Noise Level 0.8 </figcaption>  </figure> 
+                                              <figure> <img src = "part B pt1/OODTesting/ood_sigma_1.0.png" style="width:300px;">  <figcaption> Noise Level 1.0 </figcaption>  </figure> </div>
+            <p> The model clearly does not generalize well to high out of distribution noise levels, as it's not trained to learn them. </p>
+  
+    <h2> 1.2.3 Denoising Pure Noise </h2>   <p> In generation tasks, we feed models noise and expect them to generate meaningful outputs. I trained the UNet model on pure, random Guassian noise <code> z</code> implemented using <code> torch.rand_liken()</code>. I hope for the model to be able to denoise this noise to get clean image <code>x</code>. </p> <h3> Goal: Train a denoiser to denoise pure noise image <code>z</code> in one step, using L2 loss. </h3>  <p> I trained the UNet model over a total of 5 epochs, using the AdamW optimizer to minimze L2 loss (MSE).</p> <p> Hyperparameters: </p> <ul> <li>batch_size = 256</li> <li>learning_rate = 1e-4</li> <li>hidden_dim = 128</li> <li>num_epochs = 5</li> </ul>
+            <h3> Training Loss Curve </h3> <figure> <img src = "part B pt1/purenoise/training_curve.png" >  <figcaption>Training Loss Curve: Doesn't converge. </figcaption></figure> 
+            <h3> Sample results on pure noise after the first and the fifth epoch. </h3>   
+                        <div class="image-row">   <figure> <img src = "part B pt1/purenoise/denoised_results_epoch_comparable_1.png" style="width:300px;">  <figcaption> After 1 epoch </figcaption>  </figure> 
+                                                    <figure> <img src = "part B pt1/purenoise/denoised_results_epoch_comparable_5.png" style="width:300px;">  <figcaption> After 5 epochs </figcaption>  </figure> </div>
+                                                    <p> As a note: Though the test image is displayed, it wasn't actually used to generate the noisy input to the model, only as a reference.     </p>
+                                        
+            <h3> Patterns observed, Possible Explanations </h3>
+            <p> The generated outputs of the model is a consistent blend of all nine digits, clearly not resembling any one digit but not changing with different noise inputs. The model is attempting to average of all of the images it saw during training, as an attempt to minimize the L2 loss it used in training. 
+                This is common when training models with MSE loss with very noisy/volatile data, where the model attempts to overlook the task at hand and instead minimzes L2 loss with an average guess. The model would end up doing this if it found no good patterns in the data, as the sum of squared distances to all training examples is minimized by predicting the mean of all examples in that case. 
+                Our model is trained on pure noise, and isn't given a direction to help learn anything on the noise. So, on our model, the average best-guess output looks, naturally, like the blurry digit-accumulation generated above. </p>
 
 
 
@@ -410,4 +456,4 @@
 
 
 </html>
- -->
+
