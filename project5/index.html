@@ -440,6 +440,7 @@
             <p> The generated outputs of the model is a consistent blend of all nine digits, clearly not resembling any one digit but not changing with different noise inputs. The model is attempting to average of all of the images it saw during training, as an attempt to minimize the L2 loss it used in training. 
                 This is common when training models with MSE loss with very noisy/volatile data, where the model attempts to overlook the task at hand and instead minimzes L2 loss with an average guess. The model would end up doing this if it found no good patterns in the data, as the sum of squared distances to all training examples is minimized by predicting the mean of all examples in that case. 
                 Our model is trained on pure noise, and isn't given a direction to help learn anything on the noise. So, on our model, the average best-guess output looks, naturally, like the blurry digit-accumulation generated above. </p>
+                <p> And since on the training curve we saw that there's little decrease in loss from Epoch 1 to Epoch 5, we don't expect the model to improve much between these two epochs and is why there's similar output results between the two. </p>
 
 
 
