@@ -2,112 +2,427 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Project 5</title>
+    <title>Project 5 – Wicked (Glinda Edition)</title>
     <style>
+        :root {
+            --glinda-pink-soft: #f8c7e6;
+            --glinda-pink-main: #f5a6df;
+            --glinda-pink-deep: #d96fb9;
+            --elphaba-green: #00b140;
+            --emerald-deep: #02130c;
+            --night-sky: #050608;
+            --wicked-gray: #dbe3e0;
+            --card-bg: #151821;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 1000px;
-            margin: 20px auto;
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                radial-gradient(circle at top, rgba(245,166,223,0.18) 0, transparent 45%),
+                radial-gradient(circle at 80% 10%, rgba(0,177,64,0.16) 0, transparent 50%),
+                linear-gradient(to bottom, #050608, #02040a 55%, #000000);
+            color: var(--wicked-gray);
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--glinda-pink-main);
+            text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 20px 64px;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(14px);
+            background:
+                linear-gradient(to right,
+                    rgba(5,6,8,0.96),
+                    rgba(5,6,8,0.9),
+                    rgba(5,6,8,0.85));
+            border-bottom: 1px solid rgba(245,166,223,0.6);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.65);
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .logo-lockup {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            border: 2px solid rgba(245,198,230,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 30% 0, #ffffff 0, #f8c7e6 32%, #f5a6df 58%, #d96fb9 100%);
+            box-shadow:
+                0 0 18px rgba(245,166,223,0.7),
+                0 0 32px rgba(0,177,64,0.45);
+            font-size: 22px;
+            font-weight: 700;
+            color: #4b2740;
+        }
+
+        .logo-text-main {
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            font-size: 11px;
+            color: var(--glinda-pink-soft);
+        }
+
+        .logo-text-sub {
+            font-size: 11px;
+            color: #a5afac;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+        }
+
+        .nav-links a {
+            padding: 5px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(245,166,223,0.7);
+            background: radial-gradient(circle at 20% 0, rgba(255,255,255,0.28), rgba(245,166,223,0.16));
+            color: #fff;
+            box-shadow: 0 0 12px rgba(245,166,223,0.4);
+            transition: all 0.18s ease-out;
+        }
+        .nav-links a:hover {
+            background: radial-gradient(circle at 20% 0, rgba(255,255,255,0.45), rgba(245,166,223,0.32));
+            transform: translateY(-1px);
+        }
+
+        .section {
+            margin-top: 32px;
+            padding: 24px 24px 28px;
+            border-radius: 22px;
+            background:
+                radial-gradient(circle at top left, rgba(245,166,223,0.2), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(0,177,64,0.17), transparent 60%),
+                var(--card-bg);
+            border: 1px solid rgba(245,198,230,0.4);
+            box-shadow:
+                0 26px 70px rgba(0,0,0,0.85),
+                0 0 24px rgba(245,166,223,0.18);
+        }
+
+        .section + .section { margin-top: 28px; }
+
+        h1, h2, h3, h4, h5 {
+            font-family: "Cinzel", "Times New Roman", serif;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 26px;
+            text-align: center;
+            color: var(--glinda-pink-soft);
+            text-shadow:
+                0 0 24px rgba(245,166,223,0.9),
+                0 0 36px rgba(0,177,64,0.6);
+            margin-bottom: 14px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: var(--glinda-pink-main);
+            margin-top: 18px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(245,166,223,0.55);
+            padding-bottom: 4px;
             text-align: left;
         }
-        h1 {
-            color: #530f0f;
-            text-align: center;
-            
-        }
-        h2 {
-            color: #8e1600;
-            text-align: center;
-            margin-top: 20px;
-        }
-        h3 {
-            color: #804141;
-            margin: 20px 10px 10px 10px;
-            text-align: center;
-        }
-        h4 {
-            color: #664848;
-            margin: 20px 10px 10px 10px;
-        }
-        h5 {
-            color: #a26b6b;
-            margin: 20px 10px 10px 10px;
-        }
-        p {
-            margin: 20px 10px 10px 10px;
-        }
-        
-        img {
-            max-width: 600px;
-            height: auto;
-            margin: 20px 10px 10px 10px;
 
+        h3 {
+            font-size: 15px;
+            color: var(--elphaba-green);
+            margin-top: 18px;
+            margin-bottom: 6px;
+            text-align: left;
         }
+
+        h4 {
+            font-size: 13px;
+            color: #fdf3fb;
+            margin-top: 14px;
+            margin-bottom: 4px;
+        }
+
+        h5 {
+            font-size: 12px;
+            color: #c0ccd0;
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+
+        p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #e3ece9;
+        }
+
+        code {
+            font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas, "Courier New", monospace;
+            font-size: 12px;
+            padding: 1px 4px;
+            border-radius: 4px;
+            background: rgba(2, 9, 11, 0.96);
+            color: #b9ffcf;
+        }
+
+        pre {
+            background: #05080a;
+            border-radius: 10px;
+            padding: 10px 12px;
+            overflow-x: auto;
+            border: 1px solid rgba(245,166,223,0.35);
+        }
+        pre code { padding: 0; background: transparent; }
+
+        ul, ol { margin: 6px 0 8px 20px; }
+        li { margin: 2px 0 4px; }
 
         figure {
-            text-align: center; 
-            margin: 20px 0;
-        }
-        figcaption {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 14px;
-            color: #555;
-            margin-top: 5px;
-        }
-        .image-row {
-            
-            display: flex;         
-            gap: 20px;             
-            flex-wrap: wrap;       
-            justify-content: center; 
-        }
-        .image-row figure {
-            margin: 0;
+            margin: 16px auto;
             text-align: center;
-            flex: 0 1 200px;       
         }
-        .image-row img {
-            width: 200px;
+
+        figcaption {
+            font-size: 12px;
+            color: #c3ced0;
+            margin-top: 6px;
+        }
+
+        img {
+            max-width: 100%;
             height: auto;
-            display: block;
-            image-rendering: pixelated;
+            border-radius: 14px;
+            border: 1px solid rgba(219,227,224,0.2);
+            box-shadow:
+                0 18px 38px rgba(0, 0, 0, 0.85),
+                0 0 18px rgba(0,177,64,0.4);
         }
+
+        .image-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin: 14px 0;
+        }
+
+        .image-row figure {
+            flex: 0 1 180px;
+            margin: 0;
+        }
+
+        .image-row img { width: 100%; image-rendering: auto; }
+
         .image-column {
             display: flex;
-            flex-direction: column; 
-            gap: 20px;      
+            flex-direction: column;
             align-items: center;
+            gap: 18px;
+            margin: 14px 0;
         }
 
         .image-column figure {
-            margin: 0;
-            text-align: center;
+            width: 100%;
+            max-width: 820px;
         }
 
-        .image-column img {
-            max-width: 90%;  
-            height: auto;
-            display: block;
-        }
         figure.side-by-side {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
-        
 
+        figure.side-by-side img { max-width: 380px; }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: var(--glinda-pink-soft);
+            text-align: right;
+            margin-bottom: 4px;
+        }
+
+        .section-label .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            border: 1px solid rgba(245,166,223,0.7);
+            background: radial-gradient(circle at 20% 0, rgba(255,255,255,0.3), rgba(245,166,223,0.24));
+        }
+
+        .section-label .pill span.dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: var(--elphaba-green);
+            box-shadow: 0 0 8px rgba(0,177,64,0.8);
+        }
+
+        footer {
+            max-width: 1100px;
+            margin: 32px auto 40px;
+            padding: 0 20px;
+            font-size: 11px;
+            text-align: center;
+            color: #a7b1af;
+        }
+
+        .wicked-highlight {
+            color: var(--glinda-pink-main);
+            font-weight: 600;
+        }
+
+        @media (max-width: 720px) {
+            .section { padding: 18px 14px 22px; }
+            .nav-links { display: none; }
+            h1 { font-size: 22px; }
+            h2 { font-size: 16px; }
+            .image-row figure { flex: 0 1 46%; }
+        }
     </style>
 </head>
-
-
-
-
 <body>
+<header>
+    <div class="header-inner">
+        <div class="logo-lockup">
+            <div class="logo-circle">G</div>
+            <div>
+                <div class="logo-text-main">Wicked · Glinda & Elphaba</div>
+                <div class="logo-text-sub">Project 5 · CS 180 · Fall 2024</div>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="#proj5a">Project 5A</a>
+            <a href="#proj5b">Project 5B</a>
+        </nav>
+    </div>
+</header>
+
+<div class="page">
+        <!-- Wicked title + Table of Contents -->
+        <!-- Wicked title + Table of Contents with working anchor links -->
+    <section class="section">
+        <h1>
+            <a href="https://cal-cs180.github.io/fa25/hw/proj5/index.html"
+               style="color: var(--glinda-pink-soft); text-decoration: underline;">
+                Fun With Diffusion Models
+            </a>
+        </h1>
+
+        <h2>Table of Contents</h2>
+
+        <h3><a href="#proj5a">Project 5A: The Power of Diffusion Models</a></h3>
+
+                                    <h4><a href="#part0-setup">Part 0: Set Up</a></h4> <p> Click your heels all you want; without embeddings, you’re still lost in Kansas. </p>
+
+                                     <h4><a href="#sec-1-1-forward">1.1 Implementing the Forward Process</a></h4> <p> Each timestep dissolves into pure noise, as if it just had a bad encounter with a bucket of water.</p>
+
+                                    <h4><a href="#sec-1-2-classical">1.2 Classical Denoising</a></h4> <p>Gaussian blur is the Wizard behind the curtain– impressive at first, until you realize it's just smoke and mirrors.</p>
+
+                                    <h4><a href="#sec-1-3-onestep">1.3 One-Step Denoising</a></h4> <p>The Glinda Approach: Toss toss. </p>
+
+                                      <h4><a href="#sec-1-4-iterative">1.4 Iterative Denoising</a></h4> <p> Oz wasn't built in a day: iterative denoising trades randomness for structure one careful step at a time. </p>
+
+                                        <h4><a href="#sec-1-5-sampling">1.5 Diffusion Model Sampling</a></h4> <p>Every sample is a leap of faith that Oz actually exists.</p>
+
+                                        <h4><a href="#sec-1-6-cfg">1.6 Classifier-Free Guidance (CFG)</a></h4>  <p>Think of it as two witches arguing – the guidance scale decides whose magic wins.</p>
+
+                                         <h4><a href="#sec-1-7-sdedit">1.7 Image-to-image Translation</a></h4> <p>“Defying Gravity” with SDedit: jump in mid‑noise.</p>
+                                          <h4><a href="#sec-1-7-1-editing">1.7.1 Editing Hand-Drawn and Web Images</a></h4> <p>Making doodles Broadway-ready.</p>
+
+                                         <h4><a href="#sec-1-7-2-inpainting">1.7.2 Inpainting</a></h4><p> Grant some guts, restore some brains, mend a heart — the model only touches what needs magic.</p>
+
+                                            <h4><a href="#sec-1-7-3-text">1.7.3 Text-Conditional Image-to-image Translation</a></h4> <p>Even the Wizard listens when you spell it out carefully.</p>
+
+                                            <h4><a href="#sec-1-8-anagrams">1.8 Visual Anagrams</a></h4> <p> Elphaba. Glinda. Elphaba. Glinda. I'm a witch. and I'm a witch. But which is witch? Well here's the sitch. </p>
+
+                                                <h4><a href="#sec-1-9-hybrids">1.9 Hybrid Images</a></h4> <p>Every story has two sides.</p>
+
+        <h3><a href="#proj5b">Project 5B: Flow Matching from Scratch</a></h3>
+
+                                     <h4><a href="#b-part1-single-step">Part 1: Training a Single-Step Denoising UNet</a></h4><p>One‑step “There’s no place like home” click, straight back to Kansas.</p>
+
+                                 <h4><a href="#b-1-1-unet">1.1 Implementing the UNet</a></h4>  <p> Down the tornado, up into full-color Oz.</p>
+
+        <h4><a href="#b-1-2-train-denoiser">1.2 Using the UNet to Train a Denoiser</a></h4>
+                                         <h4><a href="#b-1-2-1-training">1.2.1 Training</a></h4> <p> Glinda and Elphaba preparing to quell the chaos. </p>
+
+                                          <h4><a href="#b-1-2-2-ood">1.2.2 Out-of-Distribution Testing</a></h4><p> Glinda hasn't practiced this spell yet.</p>
+
+                                            <h4><a href="#b-1-2-3-pure-noise">1.2.3 Denoising Pure Noise</a></h4><p>Why the wizard of Oz couldn't get anything done.</p>
+
+                                <h4><a href="#b-part2-flow">Part 2: Training a Flow Matching Model</a></h4><p>Flow matching is following the Yellow Brick Road from noisy chaos to clean digits; Dorothy had detours, but step by step she gets closer to the Emerald City.</p>
+
+                                <h4><a href="#b-2-1-time-cond">2.1 Adding Time Conditioning to UNet</a></h4>  <p>Time conditioning is like knowing how far into the movie we are– early storm or final curtain in Emerald City.</p>
+
+                                <h4><a href="#b-2-2-train-time">2.2 Training the UNet</a></h4> <p>Learning the winds of Oz.</p>
+
+                                <h4><a href="#b-2-3-sample-time">2.3 Sampling from the UNet</a></h4><p>Follow the yellow brick road.</p>
+
+                             <h4><a href="#b-2-4-class-cond">2.4 Adding Class-Conditioning to UNet</a></h4> <p>Class conditioning helps choose the destination: Munchkinland, Emerald City, or the Witch’s castle.</p>
+
+                                      <h4><a href="#b-2-5-train-class">2.5 Training the UNet (Class-Conditional)</a></h4>  <p>Learn to avoid the poppy fields and flying monkeys and WWW.</p>
+
+        <h4><a href="#b-2-6-sample-class">2.6 Sampling from the UNet</a></h4> <p> Follow the yellow-brick road, but now with a helping hand from Glinda </p>
+
+        <h4><a href="#b-nosched">Simplicity is best: getting rid of the learning rate scheduler.</a></h4>  <p>Old is gold; even without fancy choreography, the Yellow Brick Road leads home.</p>
+    </section>
 
 
 
-<h1>Project 5A: The Power of Diffusion Models</h1>
+    <section class="section" id="proj5a">
+        <div class="section-label">
+            <span class="pill">
+                <span class="dot"></span>
+                ACT I · DIFFUSION SPELLS
+            </span>
+        </div>
+
+        <h1>Project 5A: The Power of Diffusion Models</h1>
 <h2>Part 0: Set Up</h2>
             <h3> Prompt Embeddings </h3>
             <figure class="side-by-side">  <img src="p5pt0/pembs.png" style="height:400px;" > <figcaption>After gaining access to the DeepFloyd IF diffusion model through Hugging Face, I generated prompt embeddings using the provided Hugging Face clusters. Here are some of the prompts I embedded. </figcaption> </figure>
@@ -144,8 +459,6 @@
                                                 <figure> <img src = "p5 pt1/pt1.1/camp500.png">  <figcaption> Noisy Campanile at t=500 </figcaption> </figure>
                                                 <figure> <img src = "p5 pt1/pt1.1/camp750.png">  <figcaption> Noisy Campanile at t=750 </figcaption> </figure>  </div>
 
-
-    
     <h3>1.2 Classical Denoising</h3>
             <h4> Goal: Gaussian blur filtering to try to remove the noise using <code>torchvision.transforms.functional.gaussian_blur</code> with <code>kkernel_size = [7, 7]</code> and <code> sigma = 1</code>. </h4>
                         <div class="image-row"> <figure> <img src = "p5 pt1/pt1.1/camp250.png">  <figcaption> Noisy Campanile at t=250 </figcaption> </figure>
@@ -183,7 +496,6 @@
                                                                                                                                                                                              • <code> v_sigma </code> is random noise predicted by DeepFloyd. </figcaption> </figure>
             <h4> Implementation </h4>                 <figure> <img src = "p5 pt1/pt1.4/imp.png" > </figure> <p> I collected alpha_bar_t and alpha_bar_t_prime from the scheduler. Then, I used the model to produce a noise estimate and predicted variance. To calculate the clean estimate, I rearranged the formula frmo part 1.1 and solved for x_0. Then, to calculate x_t_prime, I used the clean estimate and the alpha/beta terms I found/calculated, according to the equation above. I then also added the variance term. Repeating this many times, I am able to iteratively denoise to attain better image predictions. </p>
 
-
             <h4> Show the noisy Campanile every 5th loop of denoising (gradually becomes less noisy). </h4>
                             <div class="image-row">         <figure> <img src = "p5 pt1/pt1.4/t690.png">    <figcaption> Iterative Denoising, Noisy Campanile at t = 690 </figcaption> </figure>
                                                             <figure> <img src = "p5 pt1/pt1.4/t540.png">    <figcaption> Iterative Denoising, Noisy Campanile at t = 540 </figcaption> </figure>
@@ -196,9 +508,6 @@
                                                             <figure> <img src = "p5 pt1/pt1.4/iterativedenoising.png">    <figcaption> Iterative Denoising: final clean image prediction  </figcaption> </figure>
                                                             <figure> <img src = "p5 pt1/pt1.4/onestep.png">    <figcaption> One Step Denoising: predicted clean image using a single denoising step (looks worse than iterative denoising)</figcaption> </figure>
                                                             <figure> <img src = "p5 pt1/pt1.4/guassianblur.png">    <figcaption> Gaussian-Filter Denoising: predicted clean image using gaussian blurring </figcaption> </figure>  </div>
-
-
-
 
     <h3>1.5 Diffusion Model Sampling </h3> <p> Instead of denoising an image, I can enter in random noise and the <code>iterative_denoise</code> function will try to make sense of the noise, ultimately generating images from scratch.</p>
     
@@ -226,7 +535,6 @@
                                                                 <figure> <img src = "p5 pt1/1.6/download copy.png">    </figure> 
                                                                 <figure> <img src = "p5 pt1/1.6/download-10.png">    </figure> 
                                                                 <figure> <img src = "p5 pt1/1.6/download-3 copy.png">    </figure> </div>
-
 
     <h3> 1.7 Image-to-image Translation </h3>
             <h4> SD Edit: Campanile </h4>
@@ -266,7 +574,7 @@
                                                                 <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/web/20.png">   <figcaption> Flower with <code>i_start = 20</code></figcaption>  </figure> 
                                                                 <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/web/download.png"> <figcaption>  Original  </figcaption>  </figure>  </div>
 
-        <h4> First hand-drawn image </h4>
+         <h4> First hand-drawn image </h4>
                                         <div class="image-row"> <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw1/1.png">  <figcaption> Room with <code>i_start = 1</code></figcaption>  </figure> 
                                                                 <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw1/2.png"> <figcaption> Room with <code>i_start = 3</code></figcaption>    </figure> 
                                                                 <figure> <img src = "p5 pt1/p5 pt1.7/1.7.1/draw1/3.png">  <figcaption> Room with <code>i_start = 5</code></figcaption>   </figure> 
@@ -312,7 +620,6 @@
                                                                     <figure> <img src = "p5 pt1/p5 pt1.7/1.7.2/own2/q.png">         <figcaption>  Pixels to Change  </figcaption>    </figure> 
                                                                     <figure> <img src = "p5 pt1/p5 pt1.7/1.7.2/own2/download.png">  <figcaption>   Sunflower Bouquet Inpainted  </figcaption>  </figure>  </div>
 
-
 <h3> 1.7.3 Text-Conditional Image-to-image Translation </h3> <p> Using the <code>prompt_embeds</code> parameter of <code>iterative_denoise_cfg </code>, we can guide the projection even more, but this time with text.</p>
             <h4> Edits of the Campanile: <code> prompt_embeds = prompt_embeds_dict["a rocket ship"]</code></h4><div class="image-row"> 
                                     <figure> <img src = "p5 pt1/p5 pt1.7/1.7.3/camp/download.png">  <figcaption> Rocket Ship at Noise Level 1           </figcaption>  </figure> 
@@ -341,7 +648,6 @@
                                     <figure> <img src = "p5 pt1/p5 pt1.7/1.7.3/own2/noise20.png"> <figcaption>      Noise Level 20                                             </figcaption>    </figure> 
                                     <figure> <img src = "p5 pt1/p5 pt1.7/1.7.3/own2/download.png"> <figcaption>  Original Sunflower Bouquet  </figcaption>  </figure>  </div>
 
-
 <h3> 1.8 Visual Anagrams </h3>
 <p> Visual Anagrams are optical illusions where an image reveals different scenes depending on its orientation. </p>
 
@@ -366,7 +672,6 @@
     
 
 
-
 <h3> 1.9 Hybrid Images </h3> <p> We can also create hybrid images by combining features from two different prompts: Low-frequency details come from one prompt, and high-frequency details come from the other. </p>
 
   <h4>Method</h4>
@@ -378,7 +683,7 @@
         <li>Lastly, denoise using <code>epsilon</code> to update the image, as done before.</li>
     </ol>
 
-    <h4> Implement <code> make_hybrids </code> </h4> <p> This is how I changed the main body of <code>make_hybrids</code> . </p> <figure> <img src = "p5 pt1/1.9/imp.png" > </figure>    
+    <h4> Implement <code> make_hybrids </code> </h4> <p> This is how I changed the main body of <code>make_hybrids</code> . </p> <figure> <img src = "p5 pt1/1.9/imp.png" > </figure>   
 
     <h4> Cat (close) and Puppy (far) </h4> <div class="image-row">  <figure> <img src = "p5 pt1/1.9/catpuppy/1.png" >  <figcaption> Cat</figcaption> </figure> 
                                                                      <figure> <img src = "p5 pt1/1.9/catpuppy/1.png" style="width: 30%;">  <figcaption> Puppy</figcaption> </figure> 
@@ -396,11 +701,15 @@
     <h4> Waterfalls (close) and Skull (far) </h4> <div class="image-row"> <figure> <img src = "p5 pt1/1.9/skull/1.png" > <figcaption> Waterfalls</figcaption></figure> 
     <figure> <img src = "p5 pt1/1.9/skull/1.png" style="width: 30%;">  <figcaption> Skull</figcaption> </figure> 
    </div>
+    </section>
 
-
-
-
-
+    <section class="section" id="proj5b">
+        <div class="section-label">
+            <span class="pill">
+                <span class="dot"></span>
+                ACT II · FLOW MATCHING CHARMS
+            </span>
+        </div>
 
 <h1>Project 5B: Flow Matching from Scratch</h1>
     <h2>Part 1: Training a Single-Step Denoising UNet</h2> <h3> Goal: Denoise noisy image in one step, optimizing over L2 Loss</h3>
@@ -408,7 +717,7 @@
 
                                 <h2> 1.2 Using the UNet to Train a Denoiser  </h2> <p> To train the denoiser, I need to generate noisy z and clean x image pairs. To create the noisy image from the clean, I need to add noise proportional to sigma to the clean image. I sampled from the MNIST dataset, obtained Gaussian noise <code>epsilon</code> using <code>torch.randn_like</code>, and create a noisy z = x + epsilon * sigma .  I made sure to clamp the resulting values between 0 and 1 for better visualization.</p>  <h3>Visualizing the noising process: </h3> <figure> <img src = "part B pt1/pt1.2.png" > </figure>
                                 
-                                            <h2> 1.1.2.1 Training </h2>
+                                            <h2> 1.2.1 Training </h2>
                                                     <h3> Goal: Train a denoiser to denoisy noisy image <code>z</code> in one step, using L2 loss with <code> σ = 0.5 </code> applied to a clean image <code>x</code>. </h3>  <p> I trained the UNet model over a total of 5 epochs, using the AdamW optimizer to minimze L2 loss (MSE).</p> <p> Hyperparameters: </p> <ul> <li>batch_size = 256</li> <li>learning_rate = 1e-4</li> <li>noise_level = 0.5</li> <li>hidden_dim = 128</li> <li>num_epochs = 5</li> </ul>
                                                     <h3> Training Loss Curve </h3> <figure> <img src = "part B pt1/savedmodels/training_curve.png" style="width:800px;" >  <figcaption>Training Loss Curve: Low loss achieved </figcaption></figure> 
                                                     <h3> Sample results on the test set with noise level <code> σ = 0.5 </code> after the first and the fifth epoch </h3>
@@ -419,9 +728,8 @@
                                                     <h3> On Same Random Images</h3> <h4> To better compare the same test images' results at each saved epoch of the model: </h4>
                                                         <div class="image-row">     <figure> <img src = "part B pt1/savedmodels/denoised_results_epoch_comparable_1.png" style="width:400px;">  <figcaption> Epoch 1 </figcaption>  </figure> 
                                                                                     <figure> <img src = "part B pt1/savedmodels/denoised_results_epoch_comparable_5.png" style="width:400px;">  <figcaption> Epoch 5 </figcaption>  </figure> </div>
-
-
-                                            <h2> 1.2.2 Out-of-Distribution Testing </h2>
+                                                    
+<h2> 1.2.2 Out-of-Distribution Testing </h2>
                                                     <p> The denoiser I just trained was trained on images noised at noise level <code> σ = 0.5 </code>, and it doesn't generalize well when test images are noised at different noise levels (called 'out of distribution' test images). </p>
                                                     <h3> Sampled results on the test set with out-of-distribution noise levels: </h3>
                                                     <h4> Small noise levels: <code> σ = [0.0, 0.2] </code> </h4>
@@ -451,10 +759,6 @@
                                                         This is common when training models with MSE loss with very noisy/volatile data, where the model attempts to overlook the task at hand and instead minimzes L2 loss with an average guess. The model would end up doing this if it found no good patterns in the data, as the sum of squared distances to all training examples is minimized by predicting the mean of all examples in that case. 
                                                         Our model is trained on pure noise, and isn't given a direction to help learn anything on the noise. So, on our model, the average best-guess output looks, naturally, like the blurry digit-accumulation generated above. </p>
                                                         <p> And since on the training curve we saw that there's little decrease in loss from Epoch 1 to Epoch 5, we don't expect the model to improve much between these two epochs and is why there's similar output results between the two. </p>
- 
-
-
-
 
 <h2>Part 2: Training a Flow Matching Model</h2>  <h3> Goal: Denoise noisy image iteratively, using flow matching.</h3> <p> We want to denoise an image iteratively, by using the model to predict the flow from noisy to clean, and moving along the flow. </p>
 
@@ -472,7 +776,6 @@
                                                                                                                                                                             <figure> <img src = "part B pt2/addtimecond/sampling_results_epoch_10.png" style="width:800px;">  <figcaption> Epoch 10 </figcaption>  </figure></div>
                                         
                                                     <p> Though the results aren't perfect, you can distinguish the digits by 10 epochs of training, showing our time-conditioned UNet is working as expected. </p>
-
 
 <h2> 2.4 Adding Class-Conditioning to UNet </h2> <p>To control which digits are sampled, I conditioned the UNet on the digits 0-9. To implement this, I added two more FCBlocks to the UNet architecture that take in a class-conditioning vector <code>c</code>. I also implemented a 10% dropout to drop the class conditioning vector, so that the UNet still works when it's not conditioned on any class. Dropout was implemented with the use of a <code> mask </code> arguement in the UNet architecture, which was all 0s with probability <code> p_uncond = 0.1 </code> and all 1s otherwise. </code>. </p> <p>Notable additions: </p> <figure> <img src = "part B pt2/addclasscond/structure.png" > </figure>
 
@@ -495,20 +798,22 @@
                                                                                                                                                                                                        <figure> <img src = "part B pt2/nosched/class_conditional_samples_epoch_5.png" style="width:800px;">  <figcaption> Epoch 5 </figcaption>  </figure> 
                                                                                                                                                                                                        <figure> <img src = "part B pt2/nosched/class_conditional_samples_epoch_10.png" style="width:800px;"> <figcaption> Epoch 10 </figcaption>  </figure></div>
 
+<h2>Citations</h2>
+<p> • Project:  project adapted from CS180 Project 5 (UC Berkeley). </p>
+<p> • Website: Wicked and all of the AI that helped create this website. </p>
+
+
+
+
 
 <h2> the end </h2>
 
+    </section>
+</div>
 
-
-
-
-
-
-
+<footer>
+    No one mourns the code that isn’t styled.<br>
+    Polished with a little <span class="wicked-highlight">Glinda sparkle</span> and a hint of emerald.
+</footer>
 </body>
-
-
-
-
 </html>
-
