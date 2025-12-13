@@ -399,7 +399,7 @@
                                 
                                             <h2> 1.1.2.1 Training </h2>
                                                     <h3> Goal: Train a denoiser to denoisy noisy image <code>z</code> in one step, using L2 loss with <code> σ = 0.5 </code> applied to a clean image <code>x</code>. </h3>  <p> I trained the UNet model over a total of 5 epochs, using the AdamW optimizer to minimze L2 loss (MSE).</p> <p> Hyperparameters: </p> <ul> <li>batch_size = 256</li> <li>learning_rate = 1e-4</li> <li>noise_level = 0.5</li> <li>hidden_dim = 128</li> <li>num_epochs = 5</li> </ul>
-                                                    <h3> Training Loss Curve </h3> <figure> <img src = "part B pt1/savedmodels/training_curve.png" >  <figcaption>Training Loss Curve: Low loss achieved </figcaption></figure> 
+                                                    <h3> Training Loss Curve </h3> <figure> <img src = "part B pt1/savedmodels/training_curve.png" style="width:800px;" >  <figcaption>Training Loss Curve: Low loss achieved </figcaption></figure> 
                                                     <h3> Sample results on the test set with noise level <code> σ = 0.5 </code> after the first and the fifth epoch </h3>
                                                     <h3> On Random Images</h3>
                                                         <div class="image-row">     <figure> <img src = "part B pt1/savedmodels/denoised_results_epoch_1.png" style="width:400px;">  <figcaption> Epoch 1 </figcaption>  </figure> 
