@@ -157,6 +157,7 @@
 
     <h3>1.3 One-Step Denoising</h3>
             <p> Here, we aim to denoise using our model. First, we run the forward process on the image at the given timestep <code>t</code>, and then predict the noise using the pretrained denoiser. Now, we can generate the clean estimate by solving for <code>x_0</code> from the equation in Part 1.1. </p>
+            <h4> Reminder of original (scaled) image: </h4> <figure> <img src = "p5 pt1/pt1.4/original.png" style: width="200">  </figure>
             <h4> Goal: Denoise Using the Denoiser in one step. </h4>
                         <div class="image-row"> <figure> <img src = "p5 pt1/pt1.1/camp250.png">  <figcaption> Noisy Campanile at t=250 </figcaption> </figure>
                                                 <figure> <img src = "p5 pt1/pt1.1/camp500.png">  <figcaption> Noisy Campanile at t=500 </figcaption> </figure>
@@ -180,7 +181,7 @@
                                                                                                                                                                                              • <code>beta_t</code> =  <code>1 - alpha_t</code> <br>
                                                                                                                                                                                              • <code> x_0 </code> is our current estimate of the clean image <br>
                                                                                                                                                                                              • <code> v_sigma </code> is random noise predicted by DeepFloyd. </figcaption> </figure>
-            <h4> Implementation </h4>                 <figure> <img src = "p5 pt1/pt1.4/imp.png" > </figure>
+            <h4> Implementation </h4>                 <figure> <img src = "p5 pt1/pt1.4/imp.png" > </figure> <p> I collected alpha_bar_t and alpha_bar_t_prime from the scheduler. Then, I used the model to produce a noise estimate and predicted variance. To calculate the clean estimate, I rearranged the formula frmo part 1.1 and solved for x_0. Then, to calculate x_t_prime, I used the clean estimate and the alpha/beta terms I found/calculated, according to the equation above. I then also added the variance term. Repeating this many times, I am able to iteratively denoise to attain better image predictions. </p>
 
 
             <h4> Show the noisy Campanile every 5th loop of denoising (gradually becomes less noisy). </h4>
@@ -199,17 +200,24 @@
 
 
 
-    <h3>1.5 Diffusion Model Sampling </h3> <p> By using the <code> iterative_denoise </code> function and starting at <code>im_noise</code> = a random noisy image of desired shape, <code> i_start = 0</code>, <code> prompt_embeds = prompt_embeds_dict["a high quality photo"]</code>, and <code>timesteps=strided_timesteps</code>, we can generate images from scratch. </p>
-                                <h4> Sampled Images: </h4>
+    <h3>1.5 Diffusion Model Sampling </h3> <p> Instead of denoising an image, I can enter in random noise and the <code>iterative_denoise</code> function will try to make sense of the noise, ultimately generating images from scratch.</p>
+    
+    <p> By starting at <code>im_noise</code> = a random noisy image of desired shape, <code> i_start = 0</code>, <code> prompt_embeds = prompt_embeds_dict["a high quality photo"]</code>, and <code>timesteps=strided_timesteps</code>, I sampled some images from pure noise. </p>
+                                <h4> Sampled Images (couldn't choose just 5): </h4>
                                 <div class="image-row">     <figure> <img src = "p5 pt1/pt 1.5/download-5.png">    </figure>
                                                             <figure> <img src = "p5 pt1/pt 1.5/download.png">     </figure>
                                                             <figure> <img src = "p5 pt1/pt 1.5/download-6.png">     </figure>
                                                             <figure> <img src = "p5 pt1/pt 1.5/download-9.png">   </figure> 
                                                             <figure> <img src = "p5 pt1/pt 1.5/download-13.png">   </figure> </div>
+                                        <div class="image-row">     <figure> <img src = "p5 pt1/pt 1.5/download-2.png">    </figure>
+                                                            <figure> <img src = "p5 pt1/pt 1.5/download-7.png">     </figure>
+                                                            <figure> <img src = "p5 pt1/pt 1.5/download-12.png">     </figure>
+                                                            <figure> <img src = "p5 pt1/pt 1.5/download-14.png">   </figure> </div>
 
 
-    <h3>1.6 Classifier-Free Guidance (CFG)</h3>  <p> The images sampled in 1.5 aren't always the best. But using CFG, we can improve image quality by combining conditional and unconditional noise estimates in the diffusion process. The strength of guidance is controlled by scale, which determines <code> epsilon = uncond_epsilon + scale * (cond_epsilon - uncond_epsilon) </code>.</p>
-            <h4> Goal: Implement <code>iterative_denoise_cfg</code>  </h4>  <figure> <img src = "p5 pt1/1.6/imp.png" > </figure>
+    <h3>1.6 Classifier-Free Guidance (CFG)</h3>  <p> The images sampled in 1.5 aren't always the best. But using CFG, we can improve image quality by combining conditional and unconditional noise estimates in the diffusion process. The strength of guidance is controlled by scale, which determines <code> epsilon = uncond_epsilon + scale * (cond_epsilon - uncond_epsilon) </code>.</p> <figure> <img src = "p5 pt1/1.6/formula.png" > </figure>
+           <p> The only thing that changes is the calculation of epsilonm which will incorporate the same conditioned noise  from <code> iterative_denoise </code> using <code>prombt_embeds</code>, as well as an unconditioned noise estimate from the model using <code>uncond_prompt_embeds</code> according to the equaiton above. </p>
+    <h4> Goal: Implement <code>iterative_denoise_cfg</code>  </h4>  <figure> <img src = "p5 pt1/1.6/imp.png" > </figure>
                 <p> We can then generate better-quality pictures using  <code>iterative_denoise_cfg</code>  with <code>im_noise</code> = a random noisy image of desired shape,<code> i_start = 0</code>, <code> prompt_embeds = prompt_embeds_dict["a high quality photo"]</code>, <code>uncond_prompt_embeds = prompt_embeds_dict['']</code>, <code>timesteps=strided_timesteps</code>, and <code>scale = 7</code>.</p>
 
             <h4> Images using <code>iterative_denoise_cfg</code> with <code> scale = 7 </code> = CFG scale = gamma. </h4>
@@ -280,7 +288,7 @@
         <p>    To implement Inpainting functionality, we need a diffusion model and a binary mask to allow us to edit an image by replacing content outside of masked regions of the image while keeping the image contents inside the mask intact. To do this, at each diffusion denoising loop, we want to update our image according to: </p> <figure> <img src = "p5 pt1/p5 pt1.7/1.7.2/formula.png" > </figure>
         <p> This ensures that the pixels outside the mask retain the original image content (with appropriate noise), while pixels inside the mask are replaced with new content generated by the model.</p>
         <h4> Implement <code>impaint</code></h4>
-            <p> Code follows the same structure as <code>iterative_denoise_cfg</code>, but instead of <code>image = pred_prev_image</code>, I use:</p><figure> <img src = "p5 pt1/p5 pt1.7/1.7.2/imp.png" > </figure>
+            <p> Code follows the same structure as <code>iterative_denoise_cfg</code>, but instead of <code>image = pred_prev_image</code>, I use the equation above:</p><figure> <img src = "p5 pt1/p5 pt1.7/1.7.2/imp.png" > </figure>
 
         <h4> The Campanile Impainted 1</h4> <div class="image-row"> <figure> <img src = "p5 pt1/p5 pt1.7/1.7.2/camp/c.png">         <figcaption>  Campanile      </figcaption>    </figure> 
                                                                     <figure> <img src = "p5 pt1/p5 pt1.7/1.7.2/camp/m.png">         <figcaption>  Mask           </figcaption>    </figure> 
@@ -353,7 +361,10 @@
                                                                            <figure> <img src = "p5 pt1/pt1.8/manfire/2.png"> <figcaption> "an oil painting of people around a campfire" (Flipped) </figcaption>    </figure> </div>
     <h4>  "a puppy" and "a raven" </h4>       <div class="image-row"> <figure> <img src = "p5 pt1/pt1.8/1.png">  <figcaption>  "a puppy" </figcaption>  </figure> 
                                                                            <figure> <img src="p5 pt1/pt1.8/2.png" style="transform: rotate(180deg); "> <figcaption> "a raven" (Flipped) </figcaption>    </figure> </div>
+    <h4>  "a fire" and "a rose" </h4>       <div class="image-row"> <figure> <img src = "p5 pt1/pt1.8/download-4.png">  <figcaption>  "a fire" </figcaption>  </figure> 
+                                                                           <figure> <img src="p5 pt1/pt1.8/download-3.png "> <figcaption> "a rose" (Flipped) </figcaption>    </figure> </div>
     
+
 
 
 <h3> 1.9 Hybrid Images </h3> <p> We can also create hybrid images by combining features from two different prompts: Low-frequency details come from one prompt, and high-frequency details come from the other. </p>
@@ -364,7 +375,7 @@
         <li> Then, extract low frequencies from one noise estimate using a low-pass filter (<code>torchvision.transforms.functional.gaussian_blur</code>), and high frequencies from the other using a high-pass filter (<code>img - torchvision.transforms.functional.gaussian_blur</code>).</li>
         <li> Use Gaussian blur with kernel size 33 and sigma 2. </li>
         <li>Next, combine them to form the final noise estimate:</li> <pre><code>epsilon = low_pass(epsilon1) + high_pass(epsilon2)</code></pre>
-        <li>Lastly, , denoise using <code>epsilon</code> to update the image, as done before.</li>
+        <li>Lastly, denoise using <code>epsilon</code> to update the image, as done before.</li>
     </ol>
 
     <h4> Implement <code> make_hybrids </code> </h4> <p> This is how I changed the main body of <code>make_hybrids</code> . </p> <figure> <img src = "p5 pt1/1.9/imp.png" > </figure>    
